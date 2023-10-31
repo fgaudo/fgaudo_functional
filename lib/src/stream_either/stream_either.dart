@@ -74,10 +74,10 @@ final class BimapStreamEitherTransformer<L1, L2, R1, R2>
   final R2 Function(R1) right;
 
   @override
-  Stream<Either<L2, R2>> bind(
-    Stream<Either<L1, R1>> stream,
+  StreamEither<L2, R2> bind(
+    StreamEither<L1, R1> either$,
   ) =>
-      bimap(stream)(left: left, right: right);
+      bimap(either$)(left: left, right: right);
 }
 
 final class MapLeftStreamEitherTransformer<L1, L2, R>
@@ -86,10 +86,10 @@ final class MapLeftStreamEitherTransformer<L1, L2, R>
   final L2 Function(L1) left;
 
   @override
-  Stream<Either<L2, R>> bind(
-    Stream<Either<L1, R>> stream,
+  StreamEither<L2, R> bind(
+    StreamEither<L1, R> either$,
   ) =>
-      mapLeft(stream)(left);
+      mapLeft(either$)(left);
 }
 
 final class MapRightStreamEitherTransformer<L, R1, R2>
@@ -98,10 +98,10 @@ final class MapRightStreamEitherTransformer<L, R1, R2>
   final R2 Function(R1) right;
 
   @override
-  Stream<Either<L, R2>> bind(
-    Stream<Either<L, R1>> stream,
+  StreamEither<L, R2> bind(
+    StreamEither<L, R1> either$,
   ) =>
-      mapRight(stream)(right);
+      mapRight(either$)(right);
 }
 
 final class FoldStreamEitherTransformer<L, R, A>
@@ -116,7 +116,7 @@ final class FoldStreamEitherTransformer<L, R, A>
 
   @override
   Stream<A> bind(
-    Stream<Either<L, R>> stream,
+    StreamEither<L, R> either$,
   ) =>
-      fold(stream)(left: left, right: right);
+      fold(either$)(left: left, right: right);
 }
