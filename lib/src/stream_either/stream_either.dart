@@ -15,9 +15,9 @@ StreamEither<L, R> fromTaskEither<L, R>(
 StreamEither<L2, R> Function<L2>(
   L2 Function(L1) left,
 ) mapLeft<L1, R>(
-  StreamEither<L1, R> stream$,
+  StreamEither<L1, R> either$,
 ) =>
-    <L2>(left) => bimap(stream$)(
+    <L2>(left) => bimap(either$)(
           left: left,
           right: identity1,
         );
@@ -25,9 +25,9 @@ StreamEither<L2, R> Function<L2>(
 StreamEither<L, R2> Function<R2>(
   R2 Function(R1) right,
 ) mapRight<L, R1>(
-  StreamEither<L, R1> stream$,
+  StreamEither<L, R1> either$,
 ) =>
-    <R2>(right) => bimap(stream$)(
+    <R2>(right) => bimap(either$)(
           left: identity1,
           right: right,
         );
@@ -36,13 +36,13 @@ Stream<A> Function<A>({
   required A Function(L) left,
   required A Function(R) right,
 }) fold<L, R>(
-  StreamEither<L, R> stream$,
+  StreamEither<L, R> either$,
 ) =>
     <A>({
       required left,
       required right,
     }) =>
-        stream$.map(
+        either$.map(
           (event) => switch (event) {
             Right(value: final value) => right(value),
             Left(value: final value) => left(value)
@@ -53,13 +53,13 @@ StreamEither<L2, R2> Function<L2, R2>({
   required L2 Function(L1) left,
   required R2 Function(R1) right,
 }) bimap<L1, R1>(
-  StreamEither<L1, R1> stream$,
+  StreamEither<L1, R1> either$,
 ) =>
     <L2, R2>({
       required left,
       required right,
     }) =>
-        fold(stream$)(
+        fold(either$)(
           left: (value) => Left(left(value)),
           right: (value) => Right(right(value)),
         );
