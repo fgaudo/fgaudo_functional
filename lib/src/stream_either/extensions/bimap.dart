@@ -5,5 +5,5 @@ extension BimapStreamEitherExtension<L1, R1> on SE.StreamEither<L1, R1> {
     required L2 Function(L1) left,
     required R2 Function(R1) right,
   }) =>
-      SE.bimap(this)(right: right, left: left);
+      SE.bimap(right: right, left: left)(this);
 }

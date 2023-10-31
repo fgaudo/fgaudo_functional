@@ -3,14 +3,18 @@ import '../task/task.dart';
 
 typedef TaskEither<L, R> = Future<E.Either<L, R>> Function();
 
-Task<A> Function<A>({
+Task<A> Function(
+  TaskEither<L, R> taskEither,
+) fold<L, R, A>({
   required A Function(L) left,
   required A Function(R) right,
-}) fold<L, R>(E.Either<L, R> either) => <A>({
-      required left,
-      required right,
-    }) =>
-        () async => E.fold(either)(left: left, right: right);
+}) =>
+    (taskEither) => () => taskEither().then(
+          E.fold(
+            left: left,
+            right: right,
+          ),
+        );
 
 TaskEither<L, (R1, R2)> sequenceTuple2<L, R1, R2>(
   TaskEither<L, R1> te1,

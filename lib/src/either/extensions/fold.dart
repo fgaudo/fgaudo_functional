@@ -5,5 +5,5 @@ extension FoldEitherExtension<L, R> on E.Either<L, R> {
     required A Function(R) right,
     required A Function(L) left,
   }) =>
-      E.fold(this)(right: right, left: left);
+      E.fold(right: right, left: left)(this);
 }

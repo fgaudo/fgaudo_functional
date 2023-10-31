@@ -12,57 +12,49 @@ StreamEither<L, R> fromTaskEither<L, R>(
 ) =>
     Stream.fromFuture(t());
 
-StreamEither<L2, R> Function<L2>(
-  L2 Function(L1) left,
-) mapLeft<L1, R>(
+StreamEither<L2, R> Function<R>(
   StreamEither<L1, R> either$,
+) mapLeft<L1, L2>(
+  L2 Function(L1) left,
 ) =>
-    <L2>(left) => bimap(either$)(
+    <R>(either$) => bimap<L1, L2, R, R>(
           left: left,
           right: identity1,
-        );
+        )(either$);
 
-StreamEither<L, R2> Function<R2>(
-  R2 Function(R1) right,
-) mapRight<L, R1>(
+StreamEither<L, R2> Function<L>(
   StreamEither<L, R1> either$,
+) mapRight<R1, R2>(
+  R2 Function(R1) right,
 ) =>
-    <R2>(right) => bimap(either$)(
+    <L>(either$) => bimap<L, L, R1, R2>(
           left: identity1,
           right: right,
-        );
+        )(either$);
 
-Stream<A> Function<A>({
+Stream<A> Function(
+  StreamEither<L, R> either$,
+) fold<A, L, R>({
   required A Function(L) left,
   required A Function(R) right,
-}) fold<L, R>(
-  StreamEither<L, R> either$,
-) =>
-    <A>({
-      required left,
-      required right,
-    }) =>
-        either$.map(
+}) =>
+    (either$) => either$.map(
           (event) => switch (event) {
             Right(value: final value) => right(value),
             Left(value: final value) => left(value)
           },
         );
 
-StreamEither<L2, R2> Function<L2, R2>({
+StreamEither<L2, R2> Function(
+  StreamEither<L1, R1> either$,
+) bimap<L1, L2, R1, R2>({
   required L2 Function(L1) left,
   required R2 Function(R1) right,
-}) bimap<L1, R1>(
-  StreamEither<L1, R1> either$,
-) =>
-    <L2, R2>({
-      required left,
-      required right,
-    }) =>
-        fold(either$)(
-          left: (value) => Left(left(value)),
-          right: (value) => Right(right(value)),
-        );
+}) =>
+    fold(
+      left: (value) => Left(left(value)),
+      right: (value) => Right(right(value)),
+    );
 
 final class BimapStreamEitherTransformer<L1, L2, R1, R2>
     extends StreamTransformerBase<Either<L1, R1>, Either<L2, R2>> {
@@ -77,7 +69,7 @@ final class BimapStreamEitherTransformer<L1, L2, R1, R2>
   StreamEither<L2, R2> bind(
     StreamEither<L1, R1> either$,
   ) =>
-      bimap(either$)(left: left, right: right);
+      bimap(left: left, right: right)(either$);
 }
 
 final class MapLeftStreamEitherTransformer<L1, L2, R>
@@ -89,7 +81,7 @@ final class MapLeftStreamEitherTransformer<L1, L2, R>
   StreamEither<L2, R> bind(
     StreamEither<L1, R> either$,
   ) =>
-      mapLeft(either$)(left);
+      mapLeft(left)(either$);
 }
 
 final class MapRightStreamEitherTransformer<L, R1, R2>
@@ -101,7 +93,7 @@ final class MapRightStreamEitherTransformer<L, R1, R2>
   StreamEither<L, R2> bind(
     StreamEither<L, R1> either$,
   ) =>
-      mapRight(either$)(right);
+      mapRight(right)(either$);
 }
 
 final class FoldStreamEitherTransformer<L, R, A>
@@ -118,5 +110,5 @@ final class FoldStreamEitherTransformer<L, R, A>
   Stream<A> bind(
     StreamEither<L, R> either$,
   ) =>
-      fold(either$)(left: left, right: right);
+      fold(left: left, right: right)(either$);
 }

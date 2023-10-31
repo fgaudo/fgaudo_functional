@@ -5,5 +5,5 @@ extension BimapEitherExtension<L1, R1> on E.Either<L1, R1> {
     required R2 Function(R1) right,
     required L2 Function(L1) left,
   }) =>
-      E.bimap(this)(right: right, left: left);
+      E.bimap(right: right, left: left)(this);
 }
