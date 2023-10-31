@@ -5,7 +5,7 @@ extension BimapStreamEitherExtension<L1, R1> on StreamEither<L1, R1> {
     required L2 Function(L1) left,
     required R2 Function(R1) right,
   }) =>
-      BimapEitherStreamTransformer(
+      BimapStreamEitherTransformer(
         right: right,
         left: left,
       ).bind(this);

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:fgaudo_functional/common.dart';
+
 import '../either/either.dart';
 import '../task_either/task_either.dart';
 
@@ -10,9 +12,9 @@ StreamEither<L, R> fromTaskEither<L, R>(
 ) =>
     Stream.fromFuture(t());
 
-final class BimapEitherStreamTransformer<L1, L2, R1, R2>
+final class BimapStreamEitherTransformer<L1, L2, R1, R2>
     extends StreamTransformerBase<Either<L1, R1>, Either<L2, R2>> {
-  const BimapEitherStreamTransformer({
+  const BimapStreamEitherTransformer({
     required this.right,
     required this.left,
   });
@@ -23,15 +25,45 @@ final class BimapEitherStreamTransformer<L1, L2, R1, R2>
   Stream<Either<L2, R2>> bind(
     Stream<Either<L1, R1>> stream,
   ) =>
-      FoldEitherStreamTransformer<L1, R1, Either<L2, R2>>(
+      FoldStreamEitherTransformer<L1, R1, Either<L2, R2>>(
         right: (value) => Right(this.right(value)),
         left: (value) => Left(this.left(value)),
       ).bind(stream);
 }
 
-final class FoldEitherStreamTransformer<L, R, A>
+final class MapLeftStreamEitherTransformer<L1, L2, R>
+    extends StreamTransformerBase<Either<L1, R>, Either<L2, R>> {
+  const MapLeftStreamEitherTransformer(this.left);
+  final L2 Function(L1) left;
+
+  @override
+  Stream<Either<L2, R>> bind(
+    Stream<Either<L1, R>> stream,
+  ) =>
+      FoldStreamEitherTransformer<L1, R, Either<L2, R>>(
+        left: (value) => Left(this.left(value)),
+        right: (value) => Right(identity1(value)),
+      ).bind(stream);
+}
+
+final class MapRightStreamEitherTransformer<L, R1, R2>
+    extends StreamTransformerBase<Either<L, R1>, Either<L, R2>> {
+  const MapRightStreamEitherTransformer(this.right);
+  final R2 Function(R1) right;
+
+  @override
+  Stream<Either<L, R2>> bind(
+    Stream<Either<L, R1>> stream,
+  ) =>
+      FoldStreamEitherTransformer<L, R1, Either<L, R2>>(
+        left: (value) => Left(identity1(value)),
+        right: (value) => Right(this.right(value)),
+      ).bind(stream);
+}
+
+final class FoldStreamEitherTransformer<L, R, A>
     extends StreamTransformerBase<Either<L, R>, A> {
-  const FoldEitherStreamTransformer({
+  const FoldStreamEitherTransformer({
     required this.right,
     required this.left,
   });
