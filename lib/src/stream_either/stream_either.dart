@@ -82,3 +82,48 @@ final class FoldStreamEitherTransformer<L, R, A>
         },
       );
 }
+
+StreamEither<L2, R> Function<L2>(
+  L2 Function(L1) left,
+) mapLeft<L1, R>(
+  StreamEither<L1, R> stream$,
+) =>
+    <L2>(left) => MapLeftStreamEitherTransformer<L1, L2, R>(left).bind(stream$);
+
+StreamEither<L, R2> Function<R2>(
+  R2 Function(R1) right,
+) mapRight<L, R1>(
+  StreamEither<L, R1> stream$,
+) =>
+    <R2>(right) =>
+        MapRightStreamEitherTransformer<L, R1, R2>(right).bind(stream$);
+
+Stream<A> Function<A>({
+  required A Function(L) left,
+  required A Function(R) right,
+}) fold<L, R>(
+  StreamEither<L, R> stream$,
+) =>
+    <A>({
+      required left,
+      required right,
+    }) =>
+        FoldStreamEitherTransformer<L, R, A>(
+          left: left,
+          right: right,
+        ).bind(stream$);
+
+StreamEither<L2, R2> Function<L2, R2>({
+  required L2 Function(L1) left,
+  required R2 Function(R1) right,
+}) bimap<L1, R1>(
+  StreamEither<L1, R1> stream$,
+) =>
+    <L2, R2>({
+      required left,
+      required right,
+    }) =>
+        BimapStreamEitherTransformer<L1, L2, R1, R2>(
+          left: left,
+          right: right,
+        ).bind(stream$);
