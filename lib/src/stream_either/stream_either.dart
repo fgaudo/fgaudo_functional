@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:fgaudo_functional/common.dart';
-
 import '../either/either.dart';
+import '../either/either.dart' as E;
 import '../task_either/task_either.dart';
 
 typedef StreamEither<L, R> = Stream<Either<L, R>>;
@@ -17,20 +16,14 @@ StreamEither<L2, R> Function<R>(
 ) mapLeft<L1, L2>(
   L2 Function(L1) left,
 ) =>
-    <R>(either$) => bimap<L1, L2, R, R>(
-          left: left,
-          right: identity1,
-        )(either$);
+    <R>(either$) => either$.map(E.mapLeft(left));
 
 StreamEither<L, R2> Function<L>(
   StreamEither<L, R1> either$,
 ) map<R1, R2>(
   R2 Function(R1) right,
 ) =>
-    <L>(either$) => bimap<L, L, R1, R2>(
-          left: identity1,
-          right: right,
-        )(either$);
+    <R>(either$) => either$.map(E.map(right));
 
 Stream<A> Function(
   StreamEither<L, R> either$,
@@ -39,10 +32,7 @@ Stream<A> Function(
   required A Function(R) right,
 }) =>
     (either$) => either$.map(
-          (event) => switch (event) {
-            Right(value: final value) => right(value),
-            Left(value: final value) => left(value)
-          },
+          E.fold(left: left, right: right),
         );
 
 StreamEither<L2, R2> Function(
