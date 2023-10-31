@@ -5,8 +5,5 @@ extension FoldStreamEitherExtension<L, R> on StreamEither<L, R> {
     required A Function(L) left,
     required A Function(R) right,
   }) =>
-      FoldStreamEitherTransformer(
-        right: right,
-        left: left,
-      ).bind(this);
+      fold(this)(left: left, right: right);
 }
