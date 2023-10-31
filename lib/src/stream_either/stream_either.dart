@@ -24,7 +24,7 @@ StreamEither<L2, R> Function<R>(
 
 StreamEither<L, R2> Function<L>(
   StreamEither<L, R1> either$,
-) mapRight<R1, R2>(
+) map<R1, R2>(
   R2 Function(R1) right,
 ) =>
     <L>(either$) => bimap<L, L, R1, R2>(
@@ -84,16 +84,16 @@ final class MapLeftStreamEitherTransformer<L1, L2, R>
       mapLeft(left)(either$);
 }
 
-final class MapRightStreamEitherTransformer<L, R1, R2>
+final class MapStreamEitherTransformer<L, R1, R2>
     extends StreamTransformerBase<Either<L, R1>, Either<L, R2>> {
-  const MapRightStreamEitherTransformer(this.right);
+  const MapStreamEitherTransformer(this.right);
   final R2 Function(R1) right;
 
   @override
   StreamEither<L, R2> bind(
     StreamEither<L, R1> either$,
   ) =>
-      mapRight(right)(either$);
+      map(right)(either$);
 }
 
 final class FoldStreamEitherTransformer<L, R, A>

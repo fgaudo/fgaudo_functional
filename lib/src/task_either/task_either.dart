@@ -16,6 +16,33 @@ Task<A> Function(
           ),
         );
 
+TaskEither<L, R2> Function<L>(
+  TaskEither<L, R1> taskEither,
+) map<R1, R2>(
+  R2 Function(R1) right,
+) =>
+    <L>(taskEither) => () => taskEither().then(E.map(right));
+
+TaskEither<L2, R> Function<R>(
+  TaskEither<L1, R> taskEither,
+) mapLeft<L1, L2>(
+  L2 Function(L1) left,
+) =>
+    <L>(taskEither) => () => taskEither().then(E.mapLeft(left));
+
+TaskEither<L2, R2> Function(
+  TaskEither<L1, R1> taskEither,
+) bimap<L1, L2, R1, R2>({
+  required L2 Function(L1) left,
+  required R2 Function(R1) right,
+}) =>
+    (taskEither) => () => taskEither().then(
+          E.bimap(
+            left: left,
+            right: right,
+          ),
+        );
+
 TaskEither<L, (R1, R2)> sequenceTuple2<L, R1, R2>(
   TaskEither<L, R1> te1,
   TaskEither<L, R2> te2,

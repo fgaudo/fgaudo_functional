@@ -12,7 +12,9 @@ final class Right<L, R> implements Either<L, R> {
   final R value;
 }
 
-A Function(Either<L, R> either) fold<A, L, R>({
+A Function(
+  Either<L, R> either,
+) fold<A, L, R>({
   required A Function(L) left,
   required A Function(R) right,
 }) =>
