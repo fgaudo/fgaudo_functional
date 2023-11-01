@@ -2,14 +2,8 @@ import 'dart:async';
 
 import '../either/either.dart';
 import '../either/either.dart' as E;
-import '../task_either/task_either.dart';
 
 typedef StreamEither<L, R> = Stream<Either<L, R>>;
-
-StreamEither<L, R> fromTaskEither<L, R>(
-  TaskEither<L, R> t,
-) =>
-    Stream.fromFuture(t());
 
 StreamEither<L2, R> Function<R>(
   StreamEither<L1, R> either$,
@@ -32,7 +26,10 @@ Stream<A> Function(
   required A Function(R) right,
 }) =>
     (either$) => either$.map(
-          E.fold(left: left, right: right),
+          E.fold(
+            left: left,
+            right: right,
+          ),
         );
 
 StreamEither<L2, R2> Function(
@@ -59,7 +56,10 @@ final class BimapStreamEitherTransformer<L1, L2, R1, R2>
   StreamEither<L2, R2> bind(
     StreamEither<L1, R1> either$,
   ) =>
-      bimap(left: left, right: right)(either$);
+      bimap(
+        left: left,
+        right: right,
+      )(either$);
 }
 
 final class MapLeftStreamEitherTransformer<L1, L2, R>
@@ -100,5 +100,8 @@ final class FoldStreamEitherTransformer<L, R, A>
   Stream<A> bind(
     StreamEither<L, R> either$,
   ) =>
-      fold(left: left, right: right)(either$);
+      fold(
+        left: left,
+        right: right,
+      )(either$);
 }
