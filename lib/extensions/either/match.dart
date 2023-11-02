@@ -1,1 +1,1 @@
-export '../../src/extensions/match.dart';
+export '../../src/extensions/either/match.dart';
