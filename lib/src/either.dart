@@ -1,3 +1,5 @@
+import '../../common.dart';
+
 sealed class Either<L, R> {}
 
 final class Left<L, R> implements Either<L, R> {
@@ -37,17 +39,17 @@ Either<L, R2> Function<L>(
 ) map<R1, R2>(
   R2 Function(R1) right,
 ) =>
-    <L>(either) => switch (either) {
-          Left(value: final value) => Left(value),
-          Right(value: final value) => Right(right(value))
-        };
+    <L>(either) => bimap(
+          left: identity1<L>,
+          right: right,
+        )(either);
 
 Either<L2, R> Function<R>(
   Either<L1, R> either,
 ) mapLeft<L1, L2>(
   L2 Function(L1) left,
 ) =>
-    <R>(either) => switch (either) {
-          Left(value: final value) => Left(left(value)),
-          Right(value: final value) => Right(value)
-        };
+    <R>(either) => bimap(
+          right: identity1<R>,
+          left: left,
+        )(either);
