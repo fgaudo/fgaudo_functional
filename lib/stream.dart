@@ -1,3 +1,3 @@
 library;
 
-export 'src/stream/stream.dart';
+export 'src/stream.dart';

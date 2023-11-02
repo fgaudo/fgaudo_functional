@@ -1,3 +1,3 @@
 library;
 
-export 'src/either/either.dart';
+export 'src/either.dart';

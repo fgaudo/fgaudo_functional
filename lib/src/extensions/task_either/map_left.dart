@@ -1,4 +1,4 @@
-import '../task_either.dart' as TE;
+import '../../../task_either.dart' as TE;
 
 extension MapLeftTaskEitherExtension<L1, R> on TE.TaskEither<L1, R> {
   TE.TaskEither<L2, R> mapLeft<L2>(

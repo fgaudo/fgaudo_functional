@@ -1,1 +1,1 @@
-export '../../src/task_either/extensions/bimap.dart';
+export '../../src/extensions/task_either/bimap.dart';

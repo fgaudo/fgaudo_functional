@@ -1,1 +1,1 @@
-export '../../src/task/extensions/map.dart';
+export '../../src/extensions/task/map.dart';

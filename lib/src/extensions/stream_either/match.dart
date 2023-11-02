@@ -1,4 +1,4 @@
-import '../stream_either.dart';
+import '../../../stream_either.dart';
 
 extension MatchStreamEitherExtension<L, R> on StreamEither<L, R> {
   Stream<A> matchEither<A>({

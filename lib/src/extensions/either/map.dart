@@ -1,4 +1,4 @@
-import '../either.dart' as E;
+import '../../either.dart' as E;
 
 extension MapEitherExtension<L, R1> on E.Either<L, R1> {
   E.Either<L, R2> map<R2>(

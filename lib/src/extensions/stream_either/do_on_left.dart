@@ -1,4 +1,4 @@
-import '../stream_either.dart' as SE;
+import '../../../stream_either.dart' as SE;
 
 extension DoOnLeftStreamEitherExtension<L, R> on SE.StreamEither<L, R> {
   SE.StreamEither<L, R> doOnLeft(

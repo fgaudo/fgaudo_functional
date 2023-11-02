@@ -1,4 +1,4 @@
-import '../stream_either.dart' as SE;
+import '../../../stream_either.dart' as SE;
 
 extension BimapStreamEitherExtension<L1, R1> on SE.StreamEither<L1, R1> {
   SE.StreamEither<L2, R2> bimap<L2, R2>({

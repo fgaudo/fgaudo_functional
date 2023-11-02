@@ -1,1 +1,1 @@
-export '../../src/stream_either/extensions/map_right.dart';
+export '../../src/extensions/stream_either/map_right.dart';

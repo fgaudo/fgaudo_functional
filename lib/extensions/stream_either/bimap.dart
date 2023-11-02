@@ -1,1 +1,1 @@
-export '../../src/stream_either/extensions/bimap.dart';
+export '../../src/extensions/stream_either/bimap.dart';

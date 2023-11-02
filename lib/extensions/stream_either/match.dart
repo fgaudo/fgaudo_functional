@@ -1,1 +1,1 @@
-export '../../src/stream_either/extensions/match.dart';
+export '../../src/extensions/stream_either/match.dart';

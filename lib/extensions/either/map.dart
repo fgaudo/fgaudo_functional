@@ -1,1 +1,1 @@
-export '../../src/either/extensions/map.dart';
+export '../../src/extensions/map.dart';

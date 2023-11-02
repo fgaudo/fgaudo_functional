@@ -1,4 +1,4 @@
-import '../task.dart' as T;
+import '../../task.dart' as T;
 
 extension MapTaskExtension<A1> on T.Task<A1> {
   T.Task<A2> map<A2>(

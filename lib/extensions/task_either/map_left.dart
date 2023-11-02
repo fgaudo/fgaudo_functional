@@ -1,1 +1,1 @@
-export '../../src/task_either/extensions/map_left.dart';
+export '../../src/extensions/task_either/map_left.dart';

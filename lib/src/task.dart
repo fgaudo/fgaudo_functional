@@ -1,4 +1,4 @@
-import '../io/io.dart';
+import 'io.dart';
 
 typedef Task<A> = Future<A> Function();
 

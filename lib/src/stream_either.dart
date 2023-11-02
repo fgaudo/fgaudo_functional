@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-import '../either/either.dart';
-import '../either/either.dart' as E;
+import 'either.dart';
+import 'either.dart' as E;
 
 typedef StreamEither<L, R> = Stream<Either<L, R>>;
 

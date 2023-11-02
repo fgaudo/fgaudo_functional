@@ -1,3 +1,3 @@
 library;
 
-export 'src/task/task.dart';
+export 'src/task.dart';

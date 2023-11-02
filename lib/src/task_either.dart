@@ -1,5 +1,5 @@
-import '../either/either.dart' as E;
-import '../task/task.dart';
+import 'either.dart' as E;
+import 'task.dart';
 
 typedef TaskEither<L, R> = Future<E.Either<L, R>> Function();
 

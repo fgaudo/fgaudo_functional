@@ -1,3 +1,3 @@
 library;
 
-export 'src/task_either/task_either.dart';
+export 'src/task_either.dart';
