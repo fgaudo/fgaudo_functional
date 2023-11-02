@@ -5,12 +5,12 @@ typedef TaskEither<L, R> = Future<E.Either<L, R>> Function();
 
 Task<A> Function(
   TaskEither<L, R> taskEither,
-) fold<L, R, A>({
+) match<L, R, A>({
   required A Function(L) left,
   required A Function(R) right,
 }) =>
     (taskEither) => () => taskEither().then(
-          E.fold(
+          E.match(
             left: left,
             right: right,
           ),

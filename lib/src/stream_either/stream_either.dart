@@ -21,12 +21,12 @@ StreamEither<L, R2> Function<L>(
 
 Stream<A> Function(
   StreamEither<L, R> either$,
-) fold<A, L, R>({
+) match<A, L, R>({
   required A Function(L) left,
   required A Function(R) right,
 }) =>
     (either$) => either$.map(
-          E.fold(
+          E.match(
             left: left,
             right: right,
           ),
@@ -38,7 +38,7 @@ StreamEither<L2, R2> Function(
   required L2 Function(L1) left,
   required R2 Function(R1) right,
 }) =>
-    fold(
+    match(
       left: (value) => Left(left(value)),
       right: (value) => Right(right(value)),
     );
@@ -100,7 +100,7 @@ final class FoldStreamEitherTransformer<L, R, A>
   Stream<A> bind(
     StreamEither<L, R> either$,
   ) =>
-      fold(
+      match(
         left: left,
         right: right,
       )(either$);
