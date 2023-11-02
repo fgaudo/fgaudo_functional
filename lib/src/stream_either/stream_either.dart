@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:rxdart/rxdart.dart';
+
 import '../either/either.dart';
 import '../either/either.dart' as E;
 
@@ -42,6 +44,16 @@ StreamEither<L2, R2> Function(
       left: (value) => Left(left(value)),
       right: (value) => Right(right(value)),
     );
+
+StreamEither<L, R> Function<R>(
+  StreamEither<L, R> either$,
+) doOnLeft<L>(
+  void Function(L) procedure,
+) =>
+    <R>(either$) => either$.doOnData((event) => switch (event) {
+          Left(value: final value) => procedure(value),
+          _ => null
+        });
 
 final class BimapStreamEitherTransformer<L1, L2, R1, R2>
     extends StreamTransformerBase<Either<L1, R1>, Either<L2, R2>> {
