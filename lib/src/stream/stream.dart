@@ -9,5 +9,5 @@ Stream<A> fromTask<A>(T.Task<A> t) =>
     FromCallableStream(() => t(), reusable: true);
 
 Stream<A> fromIO<A>(IO<A> io) => fromTask(
-      T.fromIO(() => io()),
+      T.fromIO(io),
     );
