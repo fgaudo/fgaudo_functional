@@ -36,7 +36,7 @@ linter:
     prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
     public_member_api_docs: false
     library_prefixes: false
-
+    unnecessary_lambdas: true
 # linter:
 #   rules:
 #     - camel_case_types
