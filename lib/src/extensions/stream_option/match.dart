@@ -1,7 +1,7 @@
 import '../../../stream_option.dart' as SO;
 
 extension MatchStreamOptionExtension<A> on SO.StreamOption<A> {
-  Stream<B> map<B>({
+  Stream<B> match<B>({
     required B none,
     required B Function(A) some,
   }) =>

@@ -1,9 +1,9 @@
-import '../../../stream_either.dart';
+import '../../../stream_either.dart' as SE;
 
-extension MatchStreamEitherExtension<L, R> on StreamEither<L, R> {
-  Stream<A> matchEither<A>({
+extension MatchStreamEitherExtension<L, R> on SE.StreamEither<L, R> {
+  Stream<A> match<A>({
     required A Function(L) left,
     required A Function(R) right,
   }) =>
-      match(left: left, right: right)(this);
+      SE.match(left: left, right: right)(this);
 }
