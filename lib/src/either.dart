@@ -53,3 +53,28 @@ Either<L2, R> Function<R>(
           right: identity1<R>,
           left: left,
         )(either);
+
+final class _EvalException<A> implements Exception {
+  final A value;
+
+  _EvalException(this.value);
+}
+
+Either<L, R> doEither<L, R>(
+  R Function(
+    A Function<A>(Either<L, A>),
+  ) f,
+) {
+  try {
+    return Right(
+      f(
+        <A>(either) => switch (either) {
+          Right(value: final value) => value,
+          Left(value: final value) => throw _EvalException(value)
+        },
+      ),
+    );
+  } on _EvalException<L> catch (e) {
+    return Left(e.value);
+  }
+}

@@ -1,3 +1,4 @@
+import '../either.dart';
 import 'either.dart' as E;
 import 'task.dart';
 
@@ -89,3 +90,29 @@ final class _FailFastException<T> implements Exception {
 
   final T value;
 }
+
+final class _EvalException<A> implements Exception {
+  final A value;
+
+  _EvalException(this.value);
+}
+
+TaskEither<L, R> doTaskEither<L, R>(
+  Future<R> Function(
+    Future<A> Function<A>(TaskEither<L, A>),
+  ) f,
+) =>
+    () async {
+      try {
+        return Right(
+          await f(
+            <A>(either) async => switch (await either()) {
+              Right(value: final value) => value,
+              Left(value: final value) => throw _EvalException(value)
+            },
+          ),
+        );
+      } on _EvalException<L> catch (e) {
+        return Left(e.value);
+      }
+    };

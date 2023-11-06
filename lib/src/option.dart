@@ -30,3 +30,28 @@ Option<B> Function(Option<A>) map<A, B>(
             mapper(value),
           ),
         )(option);
+
+final class _EvalException<A> implements Exception {
+  final A value;
+
+  _EvalException(this.value);
+}
+
+Option<A> doOption<A>(
+  A Function(
+    B Function<B>(Option<B>),
+  ) f,
+) {
+  try {
+    return Some(
+      f(
+        <B>(option) => switch (option) {
+          None() => throw _EvalException(null),
+          Some(value: final value) => value
+        },
+      ),
+    );
+  } on _EvalException<A> {
+    return None();
+  }
+}
