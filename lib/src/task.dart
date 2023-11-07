@@ -19,3 +19,16 @@ Task<(A1, A2)> sequenceTuple2<A1, A2>(
     };
 
 Task<A> fromIO<A>(IO<A> io) => () async => io();
+
+Task<B> Function(Task<A>) bracket<A, B>({
+  required Task<void> Function(A) release,
+  required Task<B> Function(A) use,
+}) =>
+    (acquire) => () async {
+          final resource = await acquire();
+          try {
+            return use(resource)();
+          } finally {
+            await release(resource)();
+          }
+        };
