@@ -92,9 +92,8 @@ final class _FailFastException<T> implements Exception {
 }
 
 final class _EvalException<A> implements Exception {
+  const _EvalException(this.value);
   final A value;
-
-  _EvalException(this.value);
 }
 
 TaskEither<L, R> doTaskEither<L, R>(

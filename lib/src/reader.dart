@@ -9,3 +9,8 @@ Reader<R, B> Function<R>(Reader<R, A>) map<A, B>(
   B Function(A) f,
 ) =>
     <R>(ra) => (r) => f(ra(r));
+
+Reader<ENV, A> asks<ENV, A>(
+  A Function(ENV) f,
+) =>
+    (env) => f(env);
