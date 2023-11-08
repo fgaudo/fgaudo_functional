@@ -55,9 +55,8 @@ Either<L2, R> Function<R>(
         )(either);
 
 final class _EvalException<A> implements Exception {
+  const _EvalException(this.value);
   final A value;
-
-  _EvalException(this.value);
 }
 
 Either<L, R> doEither<L, R>(

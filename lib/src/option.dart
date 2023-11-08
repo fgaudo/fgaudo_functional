@@ -32,9 +32,8 @@ Option<B> Function(Option<A>) map<A, B>(
         )(option);
 
 final class _EvalException<A> implements Exception {
+  const _EvalException(this.value);
   final A value;
-
-  _EvalException(this.value);
 }
 
 Option<A> doOption<A>(

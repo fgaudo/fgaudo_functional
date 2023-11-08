@@ -16,4 +16,4 @@ IO<B> Function(IO<A>) bracket<A, B>({
 IO<B> Function(IO<A>) flatMap<A, B>(
   IO<B> Function(A) f,
 ) =>
-    (io) => f(io());
+    (io) => () => f(io())();
