@@ -6,7 +6,7 @@ import 'io.dart';
 import 'task.dart' as T;
 
 Stream<A> fromTask<A>(T.Task<A> task) =>
-    FromCallableStream(() => task()).asBroadcastStream();
+    FromCallableStream(() => task(), reusable: true).asBroadcastStream();
 
 Stream<A> fromIO<A>(IO<A> io) => fromTask(T.fromIO(io));
 

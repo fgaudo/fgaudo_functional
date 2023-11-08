@@ -13,9 +13,11 @@ Reader<R, B> Function<R>(Reader<R, A>) map<A, B>(
 Reader<ENV, A> asks<ENV, A>(
   A Function(ENV) f,
 ) =>
-    (env) => f(env);
+    f;
 
 Reader<ENV2, A> Function<A>(Reader<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => (env2) => r(f(env2));
+
+Reader<R, void> Do<R>() => (_) {};

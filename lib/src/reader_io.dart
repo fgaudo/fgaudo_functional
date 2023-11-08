@@ -28,12 +28,17 @@ ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) map<A, B>(
         };
 
 ReaderIO<ENV, A> asks<ENV, A>(
-  A Function(ENV) f,
+  R.Reader<ENV, A> f,
 ) =>
     (env) {
       final a = f(env);
       return () => a;
     };
+
+ReaderIO<ENV, A> asksReaderIO<ENV, A>(
+  ReaderIO<ENV, A> f,
+) =>
+    (env) => f(env);
 
 ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
   required ReaderIO<ENV, void> Function(A) release,
@@ -50,3 +55,5 @@ ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
             }
           };
         };
+
+ReaderIO<R, void> Do<R>() => (_) => () {};
