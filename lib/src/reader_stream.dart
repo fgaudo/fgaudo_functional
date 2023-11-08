@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-import '../io.dart';
+import '../io.dart' as I;
+import '../stream.dart' as S;
 import 'reader_io.dart' as RIO;
 
 typedef ReaderStream<ENV, A> = Stream<A> Function(ENV);
+
+ReaderStream<ENV, A> fromReaderIO<ENV, A>(RIO.ReaderIO<ENV, A> rio) =>
+    (env) => S.fromIO(rio(env));
 
 ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) map<A, B>(
   B Function(A) f,
@@ -58,7 +62,7 @@ ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) transformStream<A, B>(
     <ENV>(ra) => (r) => ra(r).transform(f);
 
 ReaderStream<ENV, A> Function<ENV, A>(ReaderStream<ENV, A>) doOnListen(
-  IO<void> f,
+  I.IO<void> f,
 ) =>
     <A, ENV>(ra) => (r) => ra(r).doOnListen(f);
 
@@ -68,7 +72,7 @@ ReaderStream<ENV, A> Function<A>(ReaderStream<ENV, A>) doOnListenReader<ENV>(
     <A>(ra) => (r) => ra(r).doOnListen(f(r));
 
 ReaderStream<ENV, A> Function<ENV>(ReaderStream<ENV, A>) doOnData<A>(
-  IO<void> Function(A) f,
+  I.IO<void> Function(A) f,
 ) =>
     <ENV>(ra) => (r) => ra(r).doOnData((a) => f(a)());
 
@@ -81,3 +85,14 @@ ReaderStream<ENV, A> Function<ENV>(ReaderStream<ENV, A>) startWith<A>(
   A a,
 ) =>
     <ENV>(ra) => (r) => ra(r).startWith(a);
+
+ReaderStream<ENV, T> Function<ENV, A>(ReaderStream<ENV, A>) whereType<T>() =>
+    <ENV, A>(ra) => (r) => ra(r).whereType<T>();
+
+ReaderStream<ENV, A> Function<ENV>(ReaderStream<ENV, A>) where<A>(
+  bool Function(A) predicate,
+) =>
+    <ENV>(ra) => (r) => ra(r).where(predicate);
+
+ReaderStream<ENV, Never> ignoreElements<ENV, A>(ReaderStream<ENV, A> ra) =>
+    (r) => ra(r).ignoreElements();
