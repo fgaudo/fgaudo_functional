@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:rxdart/rxdart.dart';
+
+import '../io.dart';
+import 'reader_io.dart' as RIO;
 
 typedef ReaderStream<ENV, A> = Stream<A> Function(ENV);
 
@@ -46,3 +51,33 @@ ReaderStream<ENV, B> Function(ReaderStream<ENV, A>) exhaustMap<ENV, A, B>(
   ReaderStream<ENV, B> Function(A) f,
 ) =>
     (ra) => (r) => ra(r).exhaustMap((a) => f(a)(r));
+
+ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) transformStream<A, B>(
+  StreamTransformer<A, B> f,
+) =>
+    <ENV>(ra) => (r) => ra(r).transform(f);
+
+ReaderStream<ENV, A> Function<ENV, A>(ReaderStream<ENV, A>) doOnListen(
+  IO<void> f,
+) =>
+    <A, ENV>(ra) => (r) => ra(r).doOnListen(f);
+
+ReaderStream<ENV, A> Function<A>(ReaderStream<ENV, A>) doOnListenReader<ENV>(
+  RIO.ReaderIO<ENV, void> f,
+) =>
+    <A>(ra) => (r) => ra(r).doOnListen(f(r));
+
+ReaderStream<ENV, A> Function<ENV>(ReaderStream<ENV, A>) doOnData<A>(
+  IO<void> Function(A) f,
+) =>
+    <ENV>(ra) => (r) => ra(r).doOnData((a) => f(a)());
+
+ReaderStream<ENV, A> Function(ReaderStream<ENV, A>) doOnDataReader<ENV, A>(
+  RIO.ReaderIO<ENV, void> Function(A) f,
+) =>
+    (ra) => (r) => ra(r).doOnData((a) => f(a)(r)());
+
+ReaderStream<ENV, A> Function<ENV>(ReaderStream<ENV, A>) startWith<A>(
+  A a,
+) =>
+    <ENV>(ra) => (r) => ra(r).startWith(a);
