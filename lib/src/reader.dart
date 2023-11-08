@@ -14,3 +14,8 @@ Reader<ENV, A> asks<ENV, A>(
   A Function(ENV) f,
 ) =>
     (env) => f(env);
+
+Reader<ENV2, A> Function<A>(Reader<ENV1, A>) local<ENV1, ENV2>(
+  ENV1 Function(ENV2) f,
+) =>
+    <A>(r) => (env2) => r(f(env2));

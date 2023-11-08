@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:stream_transform/stream_transform.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'common.dart';
 import 'either.dart';
@@ -58,7 +58,7 @@ StreamEither<L, R> Function(
   required void Function(L) left,
   required void Function(R) right,
 }) =>
-    (either$) => either$.tap(
+    (either$) => either$.doOnData(
           (event) => switch (event) {
             Left(value: final value) => left(value),
             Right(value: final value) => right(value)

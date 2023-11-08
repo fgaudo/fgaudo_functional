@@ -27,11 +27,6 @@ ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) map<A, B>(
           return () => f(f2());
         };
 
-ReaderIO<ENV2, A> Function<A>(ReaderIO<ENV1, A>) local<ENV1, ENV2>(
-  ENV1 Function(ENV2) f,
-) =>
-    <A>(rio) => (env2) => rio(f(env2));
-
 ReaderIO<ENV, A> asks<ENV, A>(
   A Function(ENV) f,
 ) =>
