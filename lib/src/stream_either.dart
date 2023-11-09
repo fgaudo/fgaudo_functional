@@ -26,7 +26,7 @@ StreamEither<L2, R> Function<R>(
 ) =>
     <R>(either$) => bimap(
           left: left,
-          right: identity1<R>,
+          right: identity<R>,
         )(either$);
 
 StreamEither<L, R2> Function<L>(
@@ -35,7 +35,7 @@ StreamEither<L, R2> Function<L>(
   R2 Function(R1) right,
 ) =>
     <L>(either$) => bimap(
-          left: identity1<L>,
+          left: identity<L>,
           right: right,
         )(either$);
 

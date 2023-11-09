@@ -1,1 +1,1 @@
-T identity1<T>(T x) => x;
+T identity<T>(T x) => x;

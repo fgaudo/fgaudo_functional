@@ -61,4 +61,4 @@ ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
 ReaderIO<R, void> Do<R>() => (_) => () {};
 
 ReaderIO<R, Iterable<A>> sequenceArray<R, A>(Iterable<ReaderIO<R, A>> arr) =>
-    (env) => () => arr.map((io) => io(env)());
+    (env) => () => arr.map((rio) => rio(env)());

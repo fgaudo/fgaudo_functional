@@ -40,7 +40,7 @@ Either<L, R2> Function<L>(
   R2 Function(R1) right,
 ) =>
     <L>(either) => bimap(
-          left: identity1<L>,
+          left: identity<L>,
           right: right,
         )(either);
 
@@ -50,7 +50,7 @@ Either<L2, R> Function<R>(
   L2 Function(L1) left,
 ) =>
     <R>(either) => bimap(
-          right: identity1<R>,
+          right: identity<R>,
           left: left,
         )(either);
 
