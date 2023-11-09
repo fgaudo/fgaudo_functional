@@ -35,6 +35,8 @@ ReaderIO<ENV, A> asks<ENV, A>(
       return () => a;
     };
 
+ReaderIO<ENV, ENV> ask<ENV>() => (env) => () => env;
+
 ReaderIO<ENV, A> asksReaderIO<ENV, A>(
   ReaderIO<ENV, A> f,
 ) =>
@@ -57,3 +59,6 @@ ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
         };
 
 ReaderIO<R, void> Do<R>() => (_) => () {};
+
+ReaderIO<R, Iterable<A>> sequenceArray<R, A>(Iterable<ReaderIO<R, A>> arr) =>
+    (env) => () => arr.map((io) => io(env)());
