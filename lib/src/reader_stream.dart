@@ -58,9 +58,9 @@ ReaderStream<ENV, B> Function(ReaderStream<ENV, A>) exhaustMap<ENV, A, B>(
     (ra) => (r) => ra(r).exhaustMap((a) => f(a)(r));
 
 ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) transformStream<A, B>(
-  StreamTransformer<A, B> f,
+  Stream<B> Function(Stream<A>) f,
 ) =>
-    <ENV>(ra) => (r) => ra(r).transform(f);
+    <ENV>(ra) => (r) => ra(r).transform(StreamTransformer.fromBind(f));
 
 ReaderStream<ENV, A> Function<ENV, A>(ReaderStream<ENV, A>) doOnListenIO(
   I.IO<void> f,
