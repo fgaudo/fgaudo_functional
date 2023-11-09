@@ -100,6 +100,8 @@ ReaderStream<ENV, Never> ignoreElements<ENV, A>(ReaderStream<ENV, A> ra) =>
 
 ReaderStream<R, Never> Do<R>() => (_) => Stream.empty();
 
+ReaderStream<ENV, ENV> ask<ENV>() => Stream.value;
+
 ReaderStream<ENV, A> asks<ENV, A>(
   R.Reader<ENV, A> f,
 ) =>
