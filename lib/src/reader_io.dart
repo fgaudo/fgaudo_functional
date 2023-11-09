@@ -27,8 +27,8 @@ ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) map<A, B>(
           return () => f(f2());
         };
 
-ReaderIO<ENV, A> asks<ENV, A>(
-  R.Reader<ENV, A> f,
+ReaderIO<ENV, ENV2> asks<ENV, ENV2>(
+  R.Reader<ENV, ENV2> f,
 ) =>
     (env) {
       final a = f(env);
