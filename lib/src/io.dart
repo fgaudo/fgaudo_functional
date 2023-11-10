@@ -17,3 +17,8 @@ IO<B> Function(IO<A>) flatMap<A, B>(
   IO<B> Function(A) f,
 ) =>
     (io) => () => f(io())();
+
+IO<B> Function(IO<A>) map<A, B>(
+  B Function(A) f,
+) =>
+    (io) => () => f(io());

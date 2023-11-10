@@ -6,34 +6,25 @@ typedef ReaderIO<ENV, A> = R.Reader<ENV, I.IO<A>>;
 ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) flatMapIO<A, B>(
   I.IO<B> Function(A) f,
 ) =>
-    <ENV>(ra) => (r) {
-          final f2 = ra(r);
-          return () => f(f2())();
-        };
+    R.map(I.flatMap(f));
 
 ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) flatMap<ENV, A, B>(
   ReaderIO<ENV, B> Function(A) f,
 ) =>
-    (ra) => (r) {
-          final f2 = ra(r);
-          return () => f(f2())(r)();
-        };
+    R.flatMap((io) => (r) => () => f(io())(r)());
 
 ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) map<A, B>(
   B Function(A) f,
 ) =>
-    <ENV>(ra) => (r) {
-          final f2 = ra(r);
-          return () => f(f2());
-        };
+    R.map((io) => () => f(io()));
 
 ReaderIO<ENV, ENV2> asks<ENV, ENV2>(
   R.Reader<ENV, ENV2> f,
 ) =>
-    (env) {
-      final a = f(env);
-      return () => a;
-    };
+    R.asks((r) {
+      final f2 = f(r);
+      return () => f2;
+    });
 
 ReaderIO<ENV, ENV> ask<ENV>() => (env) => () => env;
 

@@ -22,16 +22,21 @@ void main() {
   });
 
   test('.flatMap() transforms correctly', () {
-    var run = false;
+    var run1 = false;
+    var run2 = false;
 
     final test1 = ((int env) {
-      run = true;
-      return () => (3, env);
+      run1 = true;
+      return () {
+        run2 = true;
+        return (3, env);
+      };
     }).flatMap(
       (value) => (env) => () => value.$1 * value.$2 * env,
     )(2);
 
-    expect(run, equals(true), reason: 'Not eager');
+    expect(run1, equals(true), reason: 'Not eager');
+    expect(run2, equals(false), reason: 'Not lazy');
 
     final test2 = test1();
 
