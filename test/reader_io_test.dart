@@ -137,9 +137,10 @@ void main() {
       expect(run2, isNotNull, reason: 'Code never run');
 
       expect(
-        run1!,
-        lessThan(run2!),
-        reason: 'Released resource before using it',
+        [run1!, run2!],
+        equals([0, 1]),
+        reason:
+            'Either used or released more than once or used and released in the wrong order',
       );
     });
 
