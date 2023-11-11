@@ -1,4 +1,5 @@
 import 'package:fgaudo_functional/extensions/reader_io/asks.dart';
+import 'package:fgaudo_functional/extensions/reader_io/bracket.dart';
 import 'package:fgaudo_functional/extensions/reader_io/flat_map.dart';
 import 'package:fgaudo_functional/extensions/reader_io/flat_map_io.dart';
 import 'package:fgaudo_functional/extensions/reader_io/map.dart';
@@ -13,14 +14,14 @@ void main() {
       run = true;
       return () => (env, 3);
     }).map(
-      (value) => value.$1 * value.$2,
+      (value) => value.$1 * value.$2 * 2,
     )(2);
 
     expect(run, true, reason: 'Not eager');
 
     final test2 = test1();
 
-    expect(test2, 6, reason: 'Wrong value');
+    expect(test2, 12, reason: 'Wrong value');
   });
 
   test('.flatMap() transforms correctly', () {
@@ -34,7 +35,7 @@ void main() {
         return (3, env);
       };
     }).flatMap(
-      (value) => (env) => () => value.$1 * value.$2 * env,
+      (value) => (env) => () => value.$1 * value.$2 * env * 2,
     )(2);
 
     expect(run1, true, reason: 'Not eager');
@@ -42,7 +43,7 @@ void main() {
 
     final test2 = test1();
 
-    expect(test2, 12, reason: 'Wrong value');
+    expect(test2, 24, reason: 'Wrong value');
   });
 
   test('.flatMapIO() transforms correctly', () {
@@ -56,7 +57,7 @@ void main() {
         return (3, env);
       };
     }).flatMapIO(
-      (value) => () => value.$1 * value.$2,
+      (value) => () => value.$1 * value.$2 * 2,
     )(2);
 
     expect(run1, true, reason: 'Not eager');
@@ -64,7 +65,7 @@ void main() {
 
     final test2 = test1();
 
-    expect(test2, 6, reason: 'Wrong value');
+    expect(test2, 12, reason: 'Wrong value');
   });
 
   test('.asks() behaves correctly', () {
@@ -88,6 +89,85 @@ void main() {
 
     expect(run1, false, reason: 'Should not run');
     expect(test2, 6, reason: 'Wrong value');
+  });
+
+  group('.bracket()', () {
+    test('handles the same resource', () {
+      List<int>? obj;
+      List<int>? param1;
+      List<int>? param2;
+
+      ((int env) => () {
+            final list = [3, 4];
+            obj ??= list;
+            return list;
+          }).bracket(
+        use: (value) => (r) {
+          param1 = value;
+          return () => 0;
+        },
+        release: (value) => (r) => () {
+              param2 = value;
+            },
+      )(2)();
+
+      expect(
+        obj == param1 && obj == param2,
+        true,
+        reason: 'Used resource is not the same object as the released one',
+      );
+    });
+
+    test('Uses and releases the resource in the correct order', () {
+      var count = 0;
+
+      int? run1;
+      int? run2;
+
+      ((int env) => () => [3, env]).bracket(
+        use: (value) => (r) => () {
+              run1 = count++;
+            },
+        release: (value) => (r) => () {
+              run2 = count++;
+            },
+      )(2)();
+
+      expect(run1, isNotNull, reason: 'Code never run');
+      expect(run2, isNotNull, reason: 'Code never run');
+
+      expect(
+        run1!,
+        lessThan(run2!),
+        reason: 'Released resource before using it',
+      );
+    });
+
+    test('Evaluates reader eagerly', () {
+      var run1 = false;
+
+      ((int env) {
+        run1 = true;
+        return () => [3, env];
+      }).bracket(
+        use: (value) => (r) => () => value[0] * value[1] * 2,
+        release: (value) => (r) => () {},
+      )(2);
+
+      expect(run1, true, reason: 'Not eager');
+    });
+
+    test('Returns correct value', () {
+      final test = ((int env) => () => [3, env]).bracket(
+        use: (value) => (r) => () => value[0] * value[1] * 2,
+        release: (value) => (r) => () {},
+      )(2)();
+
+      expect(test, 12, reason: 'Wrong value');
+    });
+  });
+  test('.sequenceArray() behaves correctly', () {
+    Do<dynamic>(); // there's not much to test here..
   });
 
   test('Do() is just a constructor', () {
