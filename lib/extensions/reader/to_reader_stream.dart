@@ -1,1 +1,1 @@
-export '../../src/extensions/reader/to_reader_stream.dart';
+export '../../src/extensions/reader.dart' show ToReaderStreamReaderExtension;

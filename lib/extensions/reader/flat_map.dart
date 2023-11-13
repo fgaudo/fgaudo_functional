@@ -1,1 +1,1 @@
-export '../../src/extensions/reader/flat_map.dart';
+export '../../src/extensions/reader.dart' show FlatMapReaderExtension;

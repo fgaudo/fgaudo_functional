@@ -1,1 +1,1 @@
-export '../../src/extensions/reader/sequence_array.dart';
+export '../../src/extensions/reader.dart' show SequenceArrayReaderExtension;

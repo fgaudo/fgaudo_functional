@@ -1,8 +1,8 @@
-import 'package:functionally/extensions/reader_io_obj/asks.dart';
-import 'package:functionally/extensions/reader_io_obj/bracket.dart';
-import 'package:functionally/extensions/reader_io_obj/flat_map.dart';
-import 'package:functionally/extensions/reader_io_obj/flat_map_io.dart';
-import 'package:functionally/extensions/reader_io_obj/map.dart';
+import 'package:functionally/extensions/reader_io/asks.dart';
+import 'package:functionally/extensions/reader_io/bracket.dart';
+import 'package:functionally/extensions/reader_io/flat_map.dart';
+import 'package:functionally/extensions/reader_io/flat_map_io.dart';
+import 'package:functionally/extensions/reader_io/map.dart';
 import 'package:functionally/reader_io.dart';
 import 'package:test/test.dart';
 

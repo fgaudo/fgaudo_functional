@@ -1,1 +1,1 @@
-export '../../src/extensions/reader/local.dart';
+export '../../src/extensions/reader.dart' show LocalReaderExtension;

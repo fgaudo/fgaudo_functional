@@ -1,1 +1,1 @@
-export '../../src/extensions/reader/to_reader_io.dart';
+export '../../src/extensions/reader.dart' show ToReaderIOReaderExtension;

@@ -1,1 +1,1 @@
-export '../../src/extensions/reader/ask.dart';
+export '../../src/extensions/reader.dart' show AskReaderExtension;
