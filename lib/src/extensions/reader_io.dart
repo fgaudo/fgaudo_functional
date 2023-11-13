@@ -2,68 +2,49 @@ import '../../io.dart' as I;
 import '../../reader.dart' as R;
 import '../../reader_io.dart' as RI;
 
-extension AskReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  RI.ReaderIOObj<ENV, ENV> ask() => RI.ask<ENV>().toReaderIOObj();
+extension AskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, ENV> ask() => RI.ask();
 }
 
-extension AsksReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  RI.ReaderIOObj<ENV, ENV2> asks<ENV2>(
+extension AsksReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, ENV2> asks<ENV2>(
     ENV2 Function(ENV) f,
   ) =>
-      RI.asks(f).toReaderIOObj();
+      RI.asks(f);
 }
 
-extension BracketReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  RI.ReaderIOObj<ENV, B> bracket<B>({
-    required RI.ReaderIOObj<ENV, void> Function(A) release,
-    required RI.ReaderIOObj<ENV, B> Function(A) use,
+extension BracketReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, B> bracket<B>({
+    required RI.ReaderIO<ENV, void> Function(A) release,
+    required RI.ReaderIO<ENV, B> Function(A) use,
   }) =>
-      RI
-          .bracket(
-            use: (A a) => use(a).call,
-            release: (A a) => release(a).call,
-          )(call)
-          .toReaderIOObj();
+      RI.bracket(
+        use: use,
+        release: release,
+      )(this);
 }
 
-extension FlatMapIOReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  RI.ReaderIOObj<ENV, B> flatMapIO<B>(
+extension FlatMapIOReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, B> flatMapIO<B>(
     I.IO<B> Function(A) f,
   ) =>
-      RI.flatMapIO(f)(call).toReaderIOObj();
+      RI.flatMapIO(f)(this);
 }
 
-extension FlatMapReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  RI.ReaderIOObj<ENV, B> flatMap<B>(
-    RI.ReaderIOObj<ENV, B> Function(A) f,
+extension FlatMapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, B> flatMap<B>(
+    RI.ReaderIO<ENV, B> Function(A) f,
   ) =>
-      RI
-          .flatMap(
-            (A a) => f(a).call,
-          )(call)
-          .toReaderIOObj();
+      RI.flatMap(f)(this);
 }
 
-extension MapReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  RI.ReaderIOObj<ENV, B> map<B>(
+extension MapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, B> map<B>(
     B Function(A) f,
   ) =>
-      RI.map(f)(call).toReaderIOObj();
+      RI.map(f)(this);
 }
 
-extension SequenceArrayReaderIOObjExtension<ENV, A>
-    on Iterable<RI.ReaderIOObj<ENV, A>> {
-  RI.ReaderIOObj<ENV, Iterable<A>> sequenceArray() => RI
-      .sequenceArray(
-        map((obj) => obj.call),
-      )
-      .toReaderIOObj();
-}
-
-extension ToReaderReaderIOObjExtension<ENV, A> on RI.ReaderIOObj<ENV, A> {
-  R.ReaderObj<ENV, I.IO<A>> toReader() => R.ReaderObj(call);
-}
-
-extension ToReaderIOObjReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIOObj<ENV, A> toReaderIOObj() => RI.ReaderIOObj(this);
+extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  R.Reader<ENV, I.IO<A>> toReader() => R.Reader(call);
 }

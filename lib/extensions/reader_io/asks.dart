@@ -1,1 +1,1 @@
-export '../../src/extensions/reader_io.dart' show AsksReaderIOObjExtension;
+export '../../src/extensions/reader_io.dart' show AsksReaderIOExtension;

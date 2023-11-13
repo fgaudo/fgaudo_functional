@@ -1,1 +1,1 @@
-export '../../src/extensions/reader_io.dart' show MapReaderIOObjExtension;
+export '../../src/extensions/reader_io.dart' show MapReaderIOExtension;

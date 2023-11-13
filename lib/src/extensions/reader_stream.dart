@@ -3,183 +3,140 @@ import '../../reader.dart' as R;
 import '../../reader_io.dart' as RIO;
 import '../../reader_stream.dart' as RS;
 
-extension AskReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, ENV> ask() => RS.ReaderStreamObj(RS.ask<ENV>());
+extension AskReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, ENV> ask() => RS.ask();
 }
 
-extension AsksReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, ENV2> asks<ENV2>(
+extension AsksReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, ENV2> asks<ENV2>(
     R.Reader<ENV, ENV2> f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.asks(f),
-      );
+      RS.asks(f);
 }
 
 extension ConcatMapStreamReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> concatMapStream<B>(
+    on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> concatMapStream<B>(
     Stream<B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.concatMapStream(f)(call),
-      );
+      RS.concatMapStream(f)(this);
 }
 
-extension ConcatMapReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> concatMap<B>(
-    RS.ReaderStreamObj<ENV, B> Function(A) f,
+extension ConcatMapReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> concatMap<B>(
+    RS.ReaderStream<ENV, B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.concatMap((A a) => f(a).call)(call),
-      );
+      RS.concatMap(f)(this);
 }
 
-extension DoOnDataIOStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> doOnDataIO(
+extension DoOnDataIOStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> doOnDataIO(
     I.IO<void> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.doOnDataIO(f)(call),
-      );
+      RS.doOnDataIO(f)(this);
 }
 
-extension DoOnDataReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> doOnData(
+extension DoOnDataReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> doOnData(
     RIO.ReaderIO<ENV, void> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.doOnData(f)(call),
-      );
+      RS.doOnData(f)(this);
 }
 
-extension DoOnListenIOReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> doOnListenIO(
+extension DoOnListenIOReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> doOnListenIO(
     I.IO<void> f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.doOnListenIO(f)(call),
-      );
+      RS.doOnListenIO(f)(this);
 }
 
-extension DoOnListenReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> doOnListen(
+extension DoOnListenReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> doOnListen(
     RIO.ReaderIO<ENV, void> f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.doOnListen(f)(call),
-      );
+      RS.doOnListen(f)(this);
 }
 
 extension ExhaustMapStreamReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> exhaustMapStream<B>(
+    on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> exhaustMapStream<B>(
     Stream<B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.exhaustMapStream(f)(call),
-      );
+      RS.exhaustMapStream(f)(this);
 }
 
-extension ExhaustMapStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> exhaustMap<B>(
-    RS.ReaderStreamObj<ENV, B> Function(A) f,
+extension ExhaustMapStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> exhaustMap<B>(
+    RS.ReaderStream<ENV, B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.exhaustMap((A a) => f(a).call)(call),
-      );
+      RS.exhaustMap(f)(this);
 }
 
 extension FlatMapStreamReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> flatMapStream<B>(
+    on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> flatMapStream<B>(
     Stream<B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.flatMapStream(f)(call),
-      );
+      RS.flatMapStream(f)(this);
 }
 
-extension FlatMapStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> flatMap<B>(
-    RS.ReaderStreamObj<ENV, B> Function(A) f,
+extension FlatMapStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> flatMap<B>(
+    RS.ReaderStream<ENV, B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.flatMap((A a) => f(a).call)(call),
-      );
+      RS.flatMap(f)(this);
 }
 
-extension IgnoreElementsStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, Never> ignoreElements() =>
-      RS.ReaderStreamObj(RS.ignoreElements(call));
+extension IgnoreElementsStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, Never> ignoreElements() => RS.ignoreElements(this);
 }
 
-extension MapReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> map<B>(
+extension MapReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> map<B>(
     B Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.map(f)(call),
-      );
+      RS.map(f)(this);
 }
 
-extension StartWithReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> startWith(
+extension StartWithReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> startWith(
     A a,
   ) =>
-      RS.ReaderStreamObj(
-        RS.startWith(a)(call),
-      );
+      RS.startWith(a)(this);
 }
 
 extension SwitchMapStreamReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> switchMapStream<B>(
+    on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> switchMapStream<B>(
     Stream<B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.switchMapStream(f)(call),
-      );
+      RS.switchMapStream(f)(this);
 }
 
-extension SwitchMapReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> switchMap<B>(
-    RS.ReaderStreamObj<ENV, B> Function(A) f,
+extension SwitchMapReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> switchMap<B>(
+    RS.ReaderStream<ENV, B> Function(A) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.switchMap((A a) => f(a).call)(call),
-      );
+      RS.switchMap(f)(this);
 }
 
-extension ToReaderReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  R.ReaderObj<ENV, Stream<A>> toReader() => R.ReaderObj(call);
+extension ToReaderReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  R.Reader<ENV, Stream<A>> toReader() => R.Reader(call);
 }
 
 extension TransformStreamReaderStreamExtension<ENV, A>
-    on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, B> transformStream<B>(
+    on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, B> transformStream<B>(
     Stream<B> Function(Stream<A>) f,
   ) =>
-      RS.ReaderStreamObj(
-        RS.transformStream(f)(call),
-      );
+      RS.transformStream(f)(this);
 }
 
-extension WhereTypeReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, T> whereType<T>() =>
-      RS.ReaderStreamObj(RS.whereType<T>()(call));
+extension WhereTypeReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, T> whereType<T>() => RS.whereType<T>()(this);
 }
 
-extension WhereReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> where(bool Function(A) predicate) =>
-      RS.ReaderStreamObj(
-        RS.where(predicate)(call),
-      );
-}
-
-extension ToReaderStreamObjReaderStreamExtension<ENV, A>
-    on RS.ReaderStream<ENV, A> {
-  RS.ReaderStreamObj<ENV, A> toReaderStreamObj() => RS.ReaderStreamObj(this);
+extension WhereReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> where(bool Function(A) predicate) =>
+      RS.where(predicate)(this);
 }

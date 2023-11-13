@@ -1,1 +1,1 @@
-export '../../src/extensions/reader_io.dart' show FlatMapReaderIOObjExtension;
+export '../../src/extensions/reader_io.dart' show FlatMapReaderIOExtension;
