@@ -1,3 +1,9 @@
+A2 pipe2<A1, A2>(
+  A1 a1,
+  A2 Function(A1) f1,
+) =>
+    f1(a1);
+
 A3 pipe3<A1, A2, A3>(
   A1 a1,
   A2 Function(A1) f1,

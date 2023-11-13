@@ -5,7 +5,7 @@ const int N = 50;
 void generatePipe(String path) {
   final s = StringBuffer();
 
-  for (var i = 2; i < N; ++i) {
+  for (var i = 1; i < N; ++i) {
     s.write('A${i + 1} pipe${i + 1}<');
 
     for (var j = 1; j <= i + 1; ++j) {
