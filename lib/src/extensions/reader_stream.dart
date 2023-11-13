@@ -120,10 +120,6 @@ extension SwitchMapReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
       RS.switchMap(f)(this);
 }
 
-extension ToReaderReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
-  R.Reader<ENV, Stream<A>> toReader() => R.Reader(call);
-}
-
 extension TransformStreamReaderStreamExtension<ENV, A>
     on RS.ReaderStream<ENV, A> {
   RS.ReaderStream<ENV, B> transformStream<B>(
