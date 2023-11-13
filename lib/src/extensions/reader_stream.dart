@@ -178,3 +178,8 @@ extension WhereReaderStreamExtension<ENV, A> on RS.ReaderStreamObj<ENV, A> {
         RS.where(predicate)(call),
       );
 }
+
+extension ToReaderStreamObjReaderStreamExtension<ENV, A>
+    on RS.ReaderStream<ENV, A> {
+  RS.ReaderStreamObj<ENV, A> toReaderStreamObj() => RS.ReaderStreamObj(this);
+}
