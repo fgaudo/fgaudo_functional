@@ -3,13 +3,12 @@ import 'package:functionally/extensions/reader_io/bracket.dart';
 import 'package:functionally/extensions/reader_io/flat_map.dart';
 import 'package:functionally/extensions/reader_io/flat_map_io.dart';
 import 'package:functionally/extensions/reader_io/map.dart';
-import 'package:functionally/reader_io.dart';
 import 'package:test/test.dart';
 
 void main() {
   test('.map() transforms correctly', () {
     var run = false;
-    final test1 = ReaderIO((int env) {
+    final test1 = ((int env) {
       run = true;
       return () => (env, 3);
     }).map(
@@ -27,14 +26,14 @@ void main() {
     var run1 = false;
     var run2 = false;
 
-    final test1 = ReaderIO((int env) {
+    final test1 = ((int env) {
       run1 = true;
       return () {
         run2 = true;
         return (3, env);
       };
     }).flatMap(
-      (value) => ReaderIO((int env) => () => value.$1 * value.$2 * env * 2),
+      (value) => (int env) => () => value.$1 * value.$2 * env * 2,
     )(2);
 
     expect(run1, true, reason: 'Not eager');
@@ -49,7 +48,7 @@ void main() {
     var run1 = false;
     var run2 = false;
 
-    final test1 = ReaderIO((int env) {
+    final test1 = ((int env) {
       run1 = true;
       return () {
         run2 = true;
@@ -71,7 +70,7 @@ void main() {
     var run1 = false;
     var run2 = false;
 
-    final test1 = ReaderIO((int env) {
+    final test1 = ((int env) {
       run1 = true;
       return () => (3, env);
     }).asks(
@@ -96,22 +95,18 @@ void main() {
       List<int>? param1;
       List<int>? param2;
 
-      ReaderIO(
-        (int env) => () {
-          final list = [3, 4];
-          obj ??= list;
-          return list;
-        },
-      ).bracket(
-        use: (value) => ReaderIO((r) {
+      ((int env) => () {
+            final list = [3, 4];
+            obj ??= list;
+            return list;
+          }).bracket(
+        use: (value) => (r) {
           param1 = value;
           return () => 0;
-        }),
-        release: (value) => ReaderIO(
-          (r) => () {
-            param2 = value;
-          },
-        ),
+        },
+        release: (value) => (r) => () {
+              param2 = value;
+            },
       )(2)();
 
       expect(
@@ -127,17 +122,13 @@ void main() {
       int? run1;
       int? run2;
 
-      ReaderIO((int env) => () => [3, env]).bracket(
-        use: (value) => ReaderIO(
-          (r) => () {
-            run1 = count++;
-          },
-        ),
-        release: (value) => ReaderIO(
-          (r) => () {
-            run2 = count++;
-          },
-        ),
+      ((int env) => () => [3, env]).bracket(
+        use: (value) => (r) => () {
+              run1 = count++;
+            },
+        release: (value) => (r) => () {
+              run2 = count++;
+            },
       )(2)();
 
       expect(run1, isNotNull, reason: 'Code never run');
@@ -154,21 +145,21 @@ void main() {
     test('Evaluates reader eagerly', () {
       var run1 = false;
 
-      ReaderIO((int env) {
+      ((int env) {
         run1 = true;
         return () => [3, env];
       }).bracket(
-        use: (value) => ReaderIO((r) => () => value[0] * value[1] * 2),
-        release: (value) => ReaderIO((r) => () {}),
+        use: (value) => (r) => () => value[0] * value[1] * 2,
+        release: (value) => (r) => () {},
       )(2);
 
       expect(run1, true, reason: 'Not eager');
     });
 
     test('Returns correct value', () {
-      final test = ReaderIO((int env) => () => [3, env]).bracket(
-        use: (value) => ReaderIO((r) => () => value[0] * value[1] * 2),
-        release: (value) => ReaderIO((r) => () {}),
+      final test = ((int env) => () => [3, env]).bracket(
+        use: (value) => (r) => () => value[0] * value[1] * 2,
+        release: (value) => (r) => () {},
       )(2)();
 
       expect(test, 12, reason: 'Wrong value');
