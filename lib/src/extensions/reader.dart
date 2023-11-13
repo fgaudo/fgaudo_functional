@@ -42,7 +42,3 @@ extension ToReaderIOReaderExtension<ENV, A> on R.Reader<ENV, I.IO<A>> {
 extension ToReaderStreamReaderExtension<ENV, A> on R.Reader<ENV, Stream<A>> {
   RS.ReaderStream<ENV, A> toReaderStream() => RS.ReaderStream(call);
 }
-
-extension ToReaderObjReaderExtension<ENV, A> on R.Reader<ENV, A> {
-  R.Reader<ENV, A> toReaderObj() => R.Reader(call);
-}
