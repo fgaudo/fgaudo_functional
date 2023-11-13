@@ -1,3 +1,5 @@
+import 'package:rxdart/rxdart.dart';
+
 abstract class Magma<A> {
   A get value;
 
@@ -27,4 +29,17 @@ final class MonoidList<A> implements Monoid<List<A>> {
 
   @override
   List<A> get empty => const [];
+}
+
+final class MonoidStream<A> implements Monoid<Stream<A>> {
+  const MonoidStream([this.value = const Stream.empty()]);
+
+  @override
+  final Stream<A> value;
+
+  @override
+  MonoidStream<A> append(Stream<A> a) => MonoidStream(value.concatWith([a]));
+
+  @override
+  Stream<A> get empty => Stream.empty();
 }

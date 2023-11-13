@@ -77,3 +77,13 @@ Either<L, R> doEither<L, R>(
     return Left(e.value);
   }
 }
+
+Either<L, R2> Function(
+  Either<L, R1> either,
+) flatMap<L, R1, R2>(
+  Either<L, R2> Function(R1) f,
+) =>
+    (either) => switch (either) {
+          Right() => f(either.value),
+          Left() => Left(either.value)
+        };
