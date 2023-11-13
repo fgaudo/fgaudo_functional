@@ -1,1 +1,1 @@
-export '../../src/extensions/reader_stream/exhaust_map.dart';
+export '../../src/extensions/reader_stream.dart' show ExhaustMapStreamExtension;

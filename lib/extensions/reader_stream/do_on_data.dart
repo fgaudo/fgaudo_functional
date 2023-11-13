@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/do_on_data.dart';
+export '../../src/extensions/reader_stream.dart'
+    show DoOnDataReaderStreamExtension;

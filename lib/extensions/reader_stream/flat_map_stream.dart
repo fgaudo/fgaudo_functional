@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/flat_map_stream.dart';
+export '../../src/extensions/reader_stream.dart'
+    show FlatMapStreamReaderStreamExtension;

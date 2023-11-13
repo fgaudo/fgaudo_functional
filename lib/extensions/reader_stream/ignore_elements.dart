@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/ignore_elements.dart';
+export '../../src/extensions/reader_stream.dart'
+    show IgnoreElementsStreamExtension;

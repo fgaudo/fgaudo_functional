@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
@@ -182,3 +183,5 @@ Future<void> main() async {
 
   asd.$1();
 }
+
+*/

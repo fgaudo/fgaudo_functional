@@ -1,1 +1,1 @@
-export '../../src/extensions/reader_stream/map.dart';
+export '../../src/extensions/reader_stream.dart' show MapReaderStreamExtension;

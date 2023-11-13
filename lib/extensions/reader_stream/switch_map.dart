@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/switch_map.dart';
+export '../../src/extensions/reader_stream.dart'
+    show SwitchMapReaderStreamExtension;

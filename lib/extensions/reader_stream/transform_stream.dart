@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/transform_stream.dart';
+export '../../src/extensions/reader_stream.dart'
+    show TransformStreamReaderStreamExtension;

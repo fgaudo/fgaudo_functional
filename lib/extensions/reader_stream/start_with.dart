@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/start_with.dart';
+export '../../src/extensions/reader_stream.dart'
+    show StartWithReaderStreamExtension;

@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/concat_map_stream.dart';
+export '../../src/extensions/reader_stream.dart'
+    show ConcatMapStreamReaderStreamExtension;

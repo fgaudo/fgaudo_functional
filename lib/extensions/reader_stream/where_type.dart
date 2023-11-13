@@ -1,1 +1,2 @@
-export '../../src/extensions/reader_stream/where_type.dart';
+export '../../src/extensions/reader_stream.dart'
+    show WhereTypeReaderStreamExtension;
