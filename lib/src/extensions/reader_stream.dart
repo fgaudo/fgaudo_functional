@@ -138,5 +138,13 @@ extension WhereReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
 }
 
 extension ToReaderReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
-  R.Reader<ENV, Stream<A>> toReader<B>() => RS.toReader(this);
+  R.Reader<ENV, Stream<A>> toReader() => RS.toReader(this);
+}
+
+extension ToReaderStreamReaderExtension<ENV, A> on R.Reader<ENV, Stream<A>> {
+  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReader(this);
+}
+
+extension ToReaderStreamReaderIOExtension<ENV, A> on RIO.ReaderIO<ENV, A> {
+  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReaderIO(this);
 }

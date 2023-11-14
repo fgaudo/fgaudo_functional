@@ -47,5 +47,5 @@ extension MapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
 }
 
 extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  R.Reader<ENV, IO<A>> toReader<B>() => RI.toReader(this);
+  R.Reader<ENV, IO<A>> toReader() => RI.toReader(this);
 }
