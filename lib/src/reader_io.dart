@@ -82,3 +82,10 @@ ReaderIO<R, Iterable<A>> sequenceArray<R, A>(Iterable<ReaderIO<R, A>> arr) =>
             (rio) => rio(env)(),
           ),
     );
+
+ReaderIO<ENV2, A> Function<A>(ReaderIO<ENV1, A>) local<ENV1, ENV2>(
+  ENV1 Function(ENV2) f,
+) =>
+    <A>(r) => ReaderIO(
+          (env2) => r(f(env2)),
+        );

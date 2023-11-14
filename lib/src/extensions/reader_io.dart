@@ -54,3 +54,10 @@ extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
 extension ToReaderStreamReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
   RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReaderIO(this);
 }
+
+extension LocalReaderIOExtension<ENV1, A> on RI.ReaderIO<ENV1, A> {
+  RI.ReaderIO<ENV2, A> local<ENV2>(
+    ENV1 Function(ENV2) f,
+  ) =>
+      RI.local(f)(this);
+}

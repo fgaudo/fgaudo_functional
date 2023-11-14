@@ -140,3 +140,10 @@ extension WhereReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
 extension ToReaderReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
   R.Reader<ENV, Stream<A>> toReader() => RS.toReader(this);
 }
+
+extension LocalReaderStreamExtension<ENV1, A> on RS.ReaderStream<ENV1, A> {
+  RS.ReaderStream<ENV2, A> local<ENV2>(
+    ENV1 Function(ENV2) f,
+  ) =>
+      RS.local(f)(this);
+}

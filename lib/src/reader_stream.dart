@@ -135,3 +135,10 @@ ReaderStream<ENV, A> asksReaderStream<ENV, A>(
   ReaderStream<ENV, A> f,
 ) =>
     ReaderStream((env) => f(env));
+
+ReaderStream<ENV2, A> Function<A>(ReaderStream<ENV1, A>) local<ENV1, ENV2>(
+  ENV1 Function(ENV2) f,
+) =>
+    <A>(r) => ReaderStream(
+          (env2) => r(f(env2)),
+        );
