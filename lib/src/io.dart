@@ -1,30 +1,24 @@
-final class IO<A> {
-  const IO(this._f);
-
-  final A Function() _f;
-
-  A call() => _f();
-}
+typedef IO<A> = A Function();
 
 IO<B> Function(IO<A>) bracket<A, B>({
   required IO<void> Function(A) release,
   required IO<B> Function(A) use,
 }) =>
-    (acquire) => IO(() {
+    (acquire) => () {
           final resource = acquire();
           try {
             return use(resource)();
           } finally {
             release(resource)();
           }
-        });
+        };
 
 IO<B> Function(IO<A>) flatMap<A, B>(
   IO<B> Function(A) f,
 ) =>
-    (io) => IO(() => f(io())());
+    (io) => () => f(io())();
 
 IO<B> Function(IO<A>) map<A, B>(
   B Function(A) f,
 ) =>
-    (io) => IO(() => f(io()));
+    (io) => () => f(io());
