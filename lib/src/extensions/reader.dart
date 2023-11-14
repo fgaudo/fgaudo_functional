@@ -1,4 +1,7 @@
 import '../../../reader.dart' as R;
+import '../../../reader_io.dart' as RI;
+import '../../../reader_stream.dart' as RS;
+import '../../io.dart';
 
 extension AskReaderExtension<ENV, A> on R.Reader<ENV, A> {
   R.Reader<ENV, ENV> ask() => R.ask();
@@ -30,4 +33,12 @@ extension MapReaderExtension<ENV, A> on R.Reader<ENV, A> {
     B Function(A) f,
   ) =>
       R.map(f)(this);
+}
+
+extension ToReaderStreamReaderExtension<ENV, A> on R.Reader<ENV, Stream<A>> {
+  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReader(this);
+}
+
+extension ToReaderIOReaderExtension<ENV, A> on R.Reader<ENV, IO<A>> {
+  RI.ReaderIO<ENV, A> toReaderIO() => RI.fromReader(this);
 }

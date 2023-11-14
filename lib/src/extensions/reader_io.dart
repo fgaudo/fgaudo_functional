@@ -2,6 +2,7 @@ import '../../io.dart' as I;
 import '../../io.dart';
 import '../../reader.dart' as R;
 import '../../reader_io.dart' as RI;
+import '../../reader_stream.dart' as RS;
 
 extension AskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
   RI.ReaderIO<ENV, ENV> ask() => RI.ask();
@@ -48,4 +49,8 @@ extension MapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
 
 extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
   R.Reader<ENV, IO<A>> toReader() => RI.toReader(this);
+}
+
+extension ToReaderStreamReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReaderIO(this);
 }
