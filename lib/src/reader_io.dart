@@ -1,61 +1,73 @@
 import '../io.dart' as I;
-import '../io.dart';
-import '../reader.dart';
+import '../reader.dart' as R;
 
 final class ReaderIO<ENV, A> {
   const ReaderIO(this._f);
 
-  final IO<A> Function(ENV) _f;
+  final R.Reader<ENV, I.IO<A>> _f;
 
-  IO<A> call(ENV env) => _f(env);
+  I.IO<A> call(ENV env) => _f(env);
 }
 
 // Constructors
 
-ReaderIO<ENV, ENV> ask<ENV>() => ReaderIO((env) => () => env);
+ReaderIO<ENV, ENV> ask<ENV>() => ReaderIO(
+      R.Reader(
+        (env) => I.IO(() => env),
+      ),
+    );
 
 ReaderIO<ENV1, ENV2> asks<ENV1, ENV2>(
   ENV2 Function(ENV1) f,
 ) =>
-    ReaderIO((env1) {
-      final env2 = f(env1);
-      return () => env2;
-    });
+    ReaderIO(
+      R.Reader((env1) {
+        final env2 = f(env1);
+        return I.IO(() => env2);
+      }),
+    );
 
 // Helpers
 
-ReaderIO<ENV, A> fromReader<ENV, A>(Reader<ENV, IO<A>> r) => ReaderIO(r.call);
+ReaderIO<ENV, A> fromReader<ENV, A>(R.Reader<ENV, I.IO<A>> r) => ReaderIO(r);
 
-Reader<ENV, IO<A>> toReader<ENV, A>(ReaderIO<ENV, A> rio) => Reader(rio.call);
+R.Reader<ENV, I.IO<A>> toReader<ENV, A>(ReaderIO<ENV, A> rio) =>
+    R.Reader(rio.call);
 
 ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) flatMapIO<A, B>(
   I.IO<B> Function(A) f,
 ) =>
     <ENV>(rio) => ReaderIO(
-          (env) {
-            final io = rio(env);
-            return () => f(io())();
-          },
+          R.Reader(
+            (env) {
+              final io = rio(env);
+              return I.IO(() => f(io())());
+            },
+          ),
         );
 
 ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) flatMap<ENV, A, B>(
   ReaderIO<ENV, B> Function(A) f,
 ) =>
     (rio) => ReaderIO(
-          (env) {
-            final io = rio(env);
-            return () => f(io())(env)();
-          },
+          R.Reader(
+            (env) {
+              final io = rio(env);
+              return I.IO(() => f(io())(env)());
+            },
+          ),
         );
 
 ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) map<A, B>(
   B Function(A) f,
 ) =>
     <ENV>(rio) => ReaderIO(
-          (env) {
-            final io = rio(env);
-            return () => f(io());
-          },
+          R.Reader(
+            (env) {
+              final io = rio(env);
+              return I.IO(() => f(io()));
+            },
+          ),
         );
 
 ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
@@ -63,29 +75,39 @@ ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
   required ReaderIO<ENV, B> Function(A) use,
 }) =>
     (acquire) => ReaderIO(
-          (env) {
-            final acquireF = acquire(env);
-            return () {
-              final resource = acquireF();
-              try {
-                return use(resource)(env)();
-              } finally {
-                release(resource)(env)();
-              }
-            };
-          },
+          R.Reader(
+            (env) {
+              final acquireF = acquire(env);
+              return I.IO(() {
+                final resource = acquireF();
+                try {
+                  return use(resource)(env)();
+                } finally {
+                  release(resource)(env)();
+                }
+              });
+            },
+          ),
         );
 
-ReaderIO<R, Iterable<A>> sequenceArray<R, A>(Iterable<ReaderIO<R, A>> arr) =>
+ReaderIO<ENV, Iterable<A>> sequenceArray<ENV, A>(
+  Iterable<ReaderIO<ENV, A>> arr,
+) =>
     ReaderIO(
-      (env) => () => arr.map(
+      R.Reader(
+        (env) => I.IO(
+          () => arr.map(
             (rio) => rio(env)(),
           ),
+        ),
+      ),
     );
 
 ReaderIO<ENV2, A> Function<A>(ReaderIO<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => ReaderIO(
-          (env2) => r(f(env2)),
+          R.Reader(
+            (env2) => r(f(env2)),
+          ),
         );
