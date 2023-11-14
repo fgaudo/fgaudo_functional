@@ -136,3 +136,7 @@ extension WhereReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
   RS.ReaderStream<ENV, A> where(bool Function(A) predicate) =>
       RS.where(predicate)(this);
 }
+
+extension ToReaderReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  R.Reader<ENV, Stream<A>> toReader<B>() => RS.toReader(this);
+}

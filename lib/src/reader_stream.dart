@@ -25,8 +25,14 @@ ReaderStream<ENV, A> asks<ENV, A>(
 
 // Helpers
 
+R.Reader<ENV, Stream<A>> toReader<ENV, A>(ReaderStream<ENV, A> rs) =>
+    R.Reader(rs.call);
+
 ReaderStream<ENV, A> fromReaderIO<ENV, A>(RIO.ReaderIO<ENV, A> rio) =>
     ReaderStream((env) => S.fromIO(rio(env)));
+
+ReaderStream<ENV, A> fromReader<ENV, A>(R.Reader<ENV, Stream<A>> rio) =>
+    ReaderStream(rio.call);
 
 ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) map<A, B>(
   B Function(A) f,

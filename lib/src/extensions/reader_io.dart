@@ -1,4 +1,6 @@
 import '../../io.dart' as I;
+import '../../io.dart';
+import '../../reader.dart' as R;
 import '../../reader_io.dart' as RI;
 
 extension AskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
@@ -42,4 +44,8 @@ extension MapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
     B Function(A) f,
   ) =>
       RI.map(f)(this);
+}
+
+extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  R.Reader<ENV, IO<A>> toReader<B>() => RI.toReader(this);
 }
