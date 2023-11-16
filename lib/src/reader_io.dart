@@ -11,6 +11,10 @@ final class ReaderIO<ENV, A> {
 
 // Constructors
 
+ReaderIO<ENV, void> make<ENV>() => ReaderIO(
+      (_) => () {},
+    );
+
 ReaderIO<ENV, ENV> ask<ENV>() => ReaderIO(
       (env) => () => env,
     );
