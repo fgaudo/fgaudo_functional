@@ -1,3 +1,4 @@
+import '../../extensions/reader.dart';
 import '../../io.dart' as I;
 import '../../reader.dart' as R;
 import '../../reader_io.dart' as RIO;
@@ -146,4 +147,12 @@ extension LocalReaderStreamExtension<ENV1, A> on RS.ReaderStream<ENV1, A> {
     ENV1 Function(ENV2) f,
   ) =>
       RS.local(f)(this);
+}
+
+extension AsBroadcastReaderStreamExtension<ENV, A> on RS.ReaderStream<ENV, A> {
+  RS.ReaderStream<ENV, A> asBroadcastStream() => toReader()
+      .map(
+        (stream) => stream.asBroadcastStream(),
+      )
+      .toReaderStream();
 }
