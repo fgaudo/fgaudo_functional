@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import '../io.dart' as I;
+import '../reader_task.dart' as RT;
+
 import '../stream.dart' as S;
 import 'reader.dart' as R;
 import 'reader_io.dart' as RIO;
@@ -34,6 +36,11 @@ R.Reader<ENV, Stream<A>> toReader<ENV, A>(ReaderStream<ENV, A> rs) => rs.call;
 ReaderStream<ENV, A> fromReaderIO<ENV, A>(RIO.ReaderIO<ENV, A> rio) =>
     ReaderStream(
       (env) => S.fromIO(rio(env)),
+    );
+
+ReaderStream<ENV, A> fromReaderTask<ENV, A>(RT.ReaderTask<ENV, A> rt) =>
+    ReaderStream(
+      (env) => S.fromTask(rt(env)),
     );
 
 ReaderStream<ENV, A> fromReader<ENV, A>(R.Reader<ENV, Stream<A>> rio) =>
