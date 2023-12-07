@@ -1,5 +1,6 @@
-import '../task.dart' as T;
 import '../reader.dart' as R;
+import '../reader_io.dart' as RIO;
+import '../task.dart' as T;
 
 final class ReaderTask<ENV, A> {
   const ReaderTask(this._f);
@@ -33,6 +34,9 @@ ReaderTask<ENV1, ENV2> asks<ENV1, ENV2>(
 
 ReaderTask<ENV, A> fromReader<ENV, A>(R.Reader<ENV, T.Task<A>> r) =>
     ReaderTask(r);
+
+ReaderTask<ENV, A> fromReaderIO<ENV, A>(RIO.ReaderIO<ENV, A> rio) =>
+    ReaderTask((env) => () async => rio(env)());
 
 R.Reader<ENV, T.Task<A>> toReader<ENV, A>(ReaderTask<ENV, A> rt) => rt.call;
 

@@ -3,6 +3,7 @@ import '../../io.dart';
 import '../../reader.dart' as R;
 import '../../reader_io.dart' as RI;
 import '../../reader_stream.dart' as RS;
+import '../../reader_task.dart' as RT;
 
 extension AskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
   RI.ReaderIO<ENV, ENV> ask() => RI.ask();
@@ -53,6 +54,10 @@ extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
 
 extension ToReaderStreamReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
   RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReaderIO(this);
+}
+
+extension ToReaderTaskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RT.ReaderTask<ENV, A> toReaderTask() => RT.fromReaderIO(this);
 }
 
 extension LocalReaderIOExtension<ENV1, A> on RI.ReaderIO<ENV1, A> {
