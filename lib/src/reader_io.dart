@@ -1,3 +1,4 @@
+import '../extensions/io/flat_map.dart';
 import '../extensions/reader_io.dart';
 import '../io.dart' as I;
 import '../reader.dart' as R;
@@ -103,9 +104,20 @@ ReaderIO<ENV2, A> Function<A>(ReaderIO<ENV1, A>) local<ENV1, ENV2>(
 ReaderIO<ENV, A> Function<A>(ReaderIO<ENV, A>) apFirst<ENV, B>(
   ReaderIO<ENV, B> rio1,
 ) =>
-    <A>(rio2) => rio1.flatMap((_) => rio2);
+    <A>(rio2) => ReaderIO(
+          (env) => rio2(env).flatMap(
+            (a) => () {
+              rio1(env)();
+              return a;
+            },
+          ),
+        );
 
 ReaderIO<ENV, B> Function<A>(ReaderIO<ENV, A>) apSecond<ENV, B>(
   ReaderIO<ENV, B> rio1,
 ) =>
-    <A>(rio2) => rio2.flatMap((_) => rio1);
+    <A>(rio2) => ReaderIO(
+          (env) => rio2(env).flatMap(
+            (_) => rio1(env),
+          ),
+        );
