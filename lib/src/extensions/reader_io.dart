@@ -66,3 +66,17 @@ extension LocalReaderIOExtension<ENV1, A> on RI.ReaderIO<ENV1, A> {
   ) =>
       RI.local(f)(this);
 }
+
+extension ApFirstReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, A> apFirst<B>(
+    RI.ReaderIO<ENV, B> second,
+  ) =>
+      RI.apFirst(second)(this);
+}
+
+extension ApSecondReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  RI.ReaderIO<ENV, B> apSecond<B>(
+    RI.ReaderIO<ENV, B> second,
+  ) =>
+      RI.apSecond(second)(this);
+}
