@@ -9,13 +9,6 @@ final class ReaderTask<ENV, A> {
 
   final RT.ReaderTask<ENV, A> _f;
 
-  ReaderTask<ENV, ENV> ask() => ReaderTask(RT.ask());
-
-  ReaderTask<ENV, ENV2> asks<ENV2>(
-    ENV2 Function(ENV) f,
-  ) =>
-      ReaderTask(RT.asks(f));
-
   ReaderTask<ENV, B> bracket<B>({
     required RT.ReaderTask<ENV, void> Function(A) release,
     required RT.ReaderTask<ENV, B> Function(A) use,
@@ -52,3 +45,10 @@ final class ReaderTask<ENV, A> {
   ) =>
       ReaderTask(RT.local(f)(_f));
 }
+
+ReaderTask<ENV, ENV> ask<ENV>() => ReaderTask(RT.ask());
+
+ReaderTask<ENV, ENV2> asks<ENV, ENV2>(
+  ENV2 Function(ENV) f,
+) =>
+    ReaderTask(RT.asks(f));

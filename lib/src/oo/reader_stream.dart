@@ -1,5 +1,4 @@
 import '../../io.dart' as I;
-import '../../reader.dart' as R;
 import '../../reader_io.dart' as RIO;
 import '../../reader_stream.dart' as RS;
 import 'reader.dart' as RR;
@@ -8,13 +7,6 @@ final class ReaderStream<ENV, A> {
   const ReaderStream(this._f);
 
   final RS.ReaderStream<ENV, A> _f;
-
-  ReaderStream<ENV, ENV> ask() => ReaderStream(RS.ask());
-
-  ReaderStream<ENV, ENV2> asks<ENV2>(
-    R.Reader<ENV, ENV2> f,
-  ) =>
-      ReaderStream(RS.asks(f));
 
   ReaderStream<ENV, B> concatMapStream<B>(
     Stream<B> Function(A) f,
@@ -109,3 +101,10 @@ final class ReaderStream<ENV, A> {
 
   RR.Reader<ENV, Stream<A>> toReader() => RR.Reader(_f);
 }
+
+ReaderStream<ENV, ENV> ask<ENV>() => ReaderStream(RS.ask());
+
+ReaderStream<ENV, ENV2> asks<ENV, ENV2>(
+  ENV2 Function(ENV) f,
+) =>
+    ReaderStream(RS.asks(f));

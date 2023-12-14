@@ -12,13 +12,6 @@ final class ReaderIO<ENV, A> {
 
   final RI.ReaderIO<ENV, A> _f;
 
-  ReaderIO<ENV, ENV> ask() => ReaderIO(RI.ask());
-
-  ReaderIO<ENV, ENV2> asks<ENV2>(
-    ENV2 Function(ENV) f,
-  ) =>
-      ReaderIO(RI.asks(f));
-
   ReaderIO<ENV, B> bracket<B>({
     required RI.ReaderIO<ENV, void> Function(A) release,
     required RI.ReaderIO<ENV, B> Function(A) use,
@@ -67,3 +60,10 @@ final class ReaderIO<ENV, A> {
   ) =>
       ReaderIO(RI.apSecond(second)(_f));
 }
+
+ReaderIO<ENV, ENV> ask<ENV>() => ReaderIO(RI.ask());
+
+ReaderIO<ENV, ENV2> asks<ENV, ENV2>(
+  ENV2 Function(ENV) f,
+) =>
+    ReaderIO(RI.asks(f));

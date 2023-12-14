@@ -8,13 +8,6 @@ final class Reader<ENV, A> {
 
   final R.Reader<ENV, A> _f;
 
-  Reader<ENV, ENV> ask() => Reader(R.ask());
-
-  Reader<ENV, ENV2> asks<ENV2>(
-    ENV2 Function(ENV) f,
-  ) =>
-      Reader(R.asks(f));
-
   Reader<ENV, B> flatMap<B>(
     R.Reader<ENV, B> Function(A) f,
   ) =>
@@ -38,3 +31,10 @@ extension ToReaderStreamReaderExtension<ENV, A> on Reader<ENV, Stream<A>> {
 extension ToReaderIOReaderExtension<ENV, A> on Reader<ENV, IO<A>> {
   RIX.ReaderIO<ENV, A> toReaderIO() => RIX.ReaderIO(_f);
 }
+
+Reader<ENV, ENV> ask<ENV>() => Reader(R.ask());
+
+Reader<ENV, ENV2> asks<ENV, ENV2>(
+  ENV2 Function(ENV) f,
+) =>
+    Reader(R.asks(f));
