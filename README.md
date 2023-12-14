@@ -14,10 +14,6 @@ Here are some examples of types which you may find
 Keep in mind that I will be adding more types as I continue development.
 If you need one in particular, just open an issue.
 
-## Getting started
-
-The library depends on [rxdart](https://pub.dev/packages/rxdart).
-
 ## Usage
 
 Here's an example:
