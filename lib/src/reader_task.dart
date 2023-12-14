@@ -19,12 +19,8 @@ ReaderTask<ENV1, ENV2> asks<ENV1, ENV2>(
 
 // Helpers
 
-ReaderTask<ENV, A> fromReader<ENV, A>(R.Reader<ENV, T.Task<A>> r) => r;
-
 ReaderTask<ENV, A> fromReaderIO<ENV, A>(RIO.ReaderIO<ENV, A> rio) =>
     (env) => () async => rio(env)();
-
-R.Reader<ENV, T.Task<A>> toReader<ENV, A>(ReaderTask<ENV, A> rt) => rt.call;
 
 ReaderTask<ENV, B> Function<ENV>(ReaderTask<ENV, A>) flatMapTask<A, B>(
   T.Task<B> Function(A) f,

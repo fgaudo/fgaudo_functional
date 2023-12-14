@@ -7,7 +7,7 @@ import 'reader.dart' as RR;
 final class ReaderStream<ENV, A> {
   const ReaderStream(this._f);
 
-  final R.Reader<ENV, Stream<A>> _f;
+  final RS.ReaderStream<ENV, A> _f;
 
   ReaderStream<ENV, ENV> ask() => ReaderStream(RS.ask());
 

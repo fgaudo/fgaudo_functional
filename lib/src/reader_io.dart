@@ -19,10 +19,6 @@ ReaderIO<ENV1, ENV2> asks<ENV1, ENV2>(
 
 // Helpers
 
-ReaderIO<ENV, A> fromReader<ENV, A>(R.Reader<ENV, I.IO<A>> r) => r;
-
-R.Reader<ENV, I.IO<A>> toReader<ENV, A>(ReaderIO<ENV, A> rio) => rio.call;
-
 ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) flatMapIO<A, B>(
   I.IO<B> Function(A) f,
 ) =>

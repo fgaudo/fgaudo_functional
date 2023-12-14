@@ -1,6 +1,4 @@
 import '../../../reader.dart' as R;
-import '../../../reader_io.dart' as RI;
-import '../../../reader_stream.dart' as RS;
 import '../../io.dart';
 import 'reader_io.dart' as RIX;
 import 'reader_stream.dart' as RSX;

@@ -22,8 +22,6 @@ ReaderStream<ENV, A> asks<ENV, A>(
 
 // Helpers
 
-R.Reader<ENV, Stream<A>> toReader<ENV, A>(ReaderStream<ENV, A> rs) => rs.call;
-
 ReaderStream<ENV, A> fromReaderIO<ENV, A>(RIO.ReaderIO<ENV, A> rio) =>
     (env) => S.fromIO(rio(env));
 

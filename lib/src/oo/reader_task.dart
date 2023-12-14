@@ -1,4 +1,3 @@
-import '../../reader.dart' as R;
 import '../../reader_stream.dart' as RS;
 import '../../reader_task.dart' as RT;
 import '../../task.dart' as T;
@@ -8,7 +7,7 @@ import 'reader_stream.dart' as RSX;
 final class ReaderTask<ENV, A> {
   const ReaderTask(this._f);
 
-  final R.Reader<ENV, T.Task<A>> _f;
+  final RT.ReaderTask<ENV, A> _f;
 
   ReaderTask<ENV, ENV> ask() => ReaderTask(RT.ask());
 

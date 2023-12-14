@@ -1,13 +1,15 @@
 import '../../../stream_option.dart' as SO;
 
-extension MapStreamOptionExtension<A> on SO.StreamOption<A> {
-  SO.StreamOption<B> map<B>(
+final class StreamOption<A> {
+  const StreamOption(this._f);
+
+  final SO.StreamOption<A> _f;
+
+  StreamOption<B> map<B>(
     B Function(A) mapper,
   ) =>
-      SO.map(mapper)(this);
-}
+      StreamOption(SO.map(mapper)(_f));
 
-extension MatchStreamOptionExtension<A> on SO.StreamOption<A> {
   Stream<B> match<B>({
     required B none,
     required B Function(A) some,
@@ -15,5 +17,5 @@ extension MatchStreamOptionExtension<A> on SO.StreamOption<A> {
       SO.match(
         onNone: none,
         onSome: some,
-      )(this);
+      )(_f);
 }

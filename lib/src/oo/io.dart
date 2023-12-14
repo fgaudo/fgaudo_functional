@@ -3,7 +3,7 @@ import '../../../io.dart' as I;
 final class IO<A> {
   const IO(this._f);
 
-  final A Function() _f;
+  final I.IO<A> _f;
 
   IO<B> bracket<B>({
     required I.IO<B> Function(A) use,
