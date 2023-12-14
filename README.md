@@ -1,39 +1,39 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This library introduces numerous pure functional types, much like [fp-ts](https://gcanti.github.io/fp-ts/)
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Here are some examples of types which you may find
+
+- Either
+- IO
+- Task
+- Reader
+- ReaderStream
+- ...
+
+Keep in mind that I will be adding more types as I continue development.
+If you need one in particular, just open an issue.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+The library depends on rxdart which is progressively fixed to the most recent major version.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Here's an example:
 
 ```dart
-const like = 'sample';
+import 'package:functionally/reader_stream.dart' as RS;
+
+void main() {
+  final RS.ReaderStream<String, String> readerStream =
+      RS.ask<String>().map((hello) => '$hello World');
+
+  readerStream('Hello').listen(print);
+}
 ```
+This sample will probably not help you much if you don't have experience with pure functional paradigms.
+If you have experience with typescript and want to learn more, i suggest searching online guides about `fp-ts`.
+Otherwise consider learning [Haskell](https://www.haskell.org/) :P.
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+You may also find more examples in [Fridgy](https://github.com/fgaudo/fridgy), an app written with this library.
