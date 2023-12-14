@@ -1,6 +1,6 @@
 name: functionally
 description: A library for functional programming goodies
-version: 0.0.1-dev.2
+version: 0.0.1-dev.3
 repository: https://github.com/fgaudo/functionally
 
 environment:
