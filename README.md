@@ -16,7 +16,7 @@ If you need one in particular, just open an issue.
 
 ## Getting started
 
-The library depends on rxdart which is progressively fixed to the most recent major version.
+The library depends on [rxdart](https://pub.dev/packages/rxdart).
 
 ## Usage
 
