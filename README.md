@@ -19,8 +19,7 @@ If you need one in particular, just open an issue.
 Here's an example:
 
 ```dart
-import 'package:functionally/extensions/reader_stream.dart';
-import 'package:functionally/reader_stream.dart' as RS;
+import 'package:functionally/oo/reader_stream.dart' as RS;
 
 void main() {
   final RS.ReaderStream<String, String> readerStream =
