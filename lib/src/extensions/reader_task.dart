@@ -2,61 +2,54 @@ import '../../reader.dart' as R;
 import '../../reader_stream.dart' as RS;
 import '../../reader_task.dart' as RT;
 import '../../task.dart' as T;
+import 'reader.dart' as RX;
+import 'reader_stream.dart' as RSX;
 
-extension AskReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RT.ReaderTask<ENV, ENV> ask() => RT.ask();
-}
+final class ReaderTask<ENV, A> {
+  const ReaderTask(this._f);
 
-extension AsksReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RT.ReaderTask<ENV, ENV2> asks<ENV2>(
+  final R.Reader<ENV, T.Task<A>> _f;
+
+  ReaderTask<ENV, ENV> ask() => ReaderTask(RT.ask());
+
+  ReaderTask<ENV, ENV2> asks<ENV2>(
     ENV2 Function(ENV) f,
   ) =>
-      RT.asks(f);
-}
+      ReaderTask(RT.asks(f));
 
-extension BracketReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RT.ReaderTask<ENV, B> bracket<B>({
+  ReaderTask<ENV, B> bracket<B>({
     required RT.ReaderTask<ENV, void> Function(A) release,
     required RT.ReaderTask<ENV, B> Function(A) use,
   }) =>
-      RT.bracket(
-        use: use,
-        release: release,
-      )(this);
-}
+      ReaderTask(
+        RT.bracket(
+          use: use,
+          release: release,
+        )(_f),
+      );
 
-extension FlatMapIOReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RT.ReaderTask<ENV, B> flatMapTask<B>(
+  ReaderTask<ENV, B> flatMapTask<B>(
     T.Task<B> Function(A) f,
   ) =>
-      RT.flatMapTask(f)(this);
-}
+      ReaderTask(RT.flatMapTask(f)(_f));
 
-extension FlatMapReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RT.ReaderTask<ENV, B> flatMap<B>(
+  ReaderTask<ENV, B> flatMap<B>(
     RT.ReaderTask<ENV, B> Function(A) f,
   ) =>
-      RT.flatMap(f)(this);
-}
+      ReaderTask(RT.flatMap(f)(_f));
 
-extension MapReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RT.ReaderTask<ENV, B> map<B>(
+  ReaderTask<ENV, B> map<B>(
     B Function(A) f,
   ) =>
-      RT.map(f)(this);
-}
+      ReaderTask(RT.map(f)(_f));
 
-extension ToReaderReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  R.Reader<ENV, T.Task<A>> toReader() => RT.toReader(this);
-}
+  RX.Reader<ENV, T.Task<A>> toReader() => RX.Reader(_f);
 
-extension ToReaderStreamReaderTaskExtension<ENV, A> on RT.ReaderTask<ENV, A> {
-  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReaderTask(this);
-}
+  RSX.ReaderStream<ENV, A> toReaderStream() =>
+      RSX.ReaderStream(RS.fromReaderTask(_f));
 
-extension LocalReaderTaskExtension<ENV1, A> on RT.ReaderTask<ENV1, A> {
-  RT.ReaderTask<ENV2, A> local<ENV2>(
-    ENV1 Function(ENV2) f,
+  ReaderTask<ENV2, A> local<ENV2>(
+    ENV Function(ENV2) f,
   ) =>
-      RT.local(f)(this);
+      ReaderTask(RT.local(f)(_f));
 }

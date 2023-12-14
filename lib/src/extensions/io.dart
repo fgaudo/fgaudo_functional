@@ -1,19 +1,23 @@
 import '../../../io.dart' as I;
 
-extension BracketIOExtension<A> on I.IO<A> {
-  I.IO<B> bracket<B>({
+final class IO<A> {
+  const IO(this._f);
+
+  final A Function() _f;
+
+  IO<B> bracket<B>({
     required I.IO<B> Function(A) use,
     required I.IO<void> Function(A) release,
   }) =>
-      I.bracket(
-        release: release,
-        use: use,
-      )(this);
-}
+      IO(
+        I.bracket(
+          release: release,
+          use: use,
+        )(_f),
+      );
 
-extension FlatMapIOExtension<A> on I.IO<A> {
-  I.IO<B> flatMap<B>(
+  IO<B> flatMap<B>(
     I.IO<B> Function(A) f,
   ) =>
-      I.flatMap(f)(this);
+      IO(I.flatMap(f)(_f));
 }

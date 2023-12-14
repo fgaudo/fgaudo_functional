@@ -1,82 +1,69 @@
 import '../../io.dart' as I;
 import '../../io.dart';
-import '../../reader.dart' as R;
 import '../../reader_io.dart' as RI;
 import '../../reader_stream.dart' as RS;
 import '../../reader_task.dart' as RT;
+import 'reader.dart' as RX;
+import 'reader_stream.dart' as RSX;
+import 'reader_task.dart' as RTX;
 
-extension AskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, ENV> ask() => RI.ask();
-}
+final class ReaderIO<ENV, A> {
+  const ReaderIO(this._f);
 
-extension AsksReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, ENV2> asks<ENV2>(
+  final RI.ReaderIO<ENV, A> _f;
+
+  ReaderIO<ENV, ENV> ask() => ReaderIO(RI.ask());
+
+  ReaderIO<ENV, ENV2> asks<ENV2>(
     ENV2 Function(ENV) f,
   ) =>
-      RI.asks(f);
-}
+      ReaderIO(RI.asks(f));
 
-extension BracketReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, B> bracket<B>({
+  ReaderIO<ENV, B> bracket<B>({
     required RI.ReaderIO<ENV, void> Function(A) release,
     required RI.ReaderIO<ENV, B> Function(A) use,
   }) =>
-      RI.bracket(
-        use: use,
-        release: release,
-      )(this);
-}
+      ReaderIO(
+        RI.bracket(
+          use: use,
+          release: release,
+        )(_f),
+      );
 
-extension FlatMapIOReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, B> flatMapIO<B>(
+  ReaderIO<ENV, B> flatMapIO<B>(
     I.IO<B> Function(A) f,
   ) =>
-      RI.flatMapIO(f)(this);
-}
+      ReaderIO(RI.flatMapIO(f)(_f));
 
-extension FlatMapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, B> flatMap<B>(
+  ReaderIO<ENV, B> flatMap<B>(
     RI.ReaderIO<ENV, B> Function(A) f,
   ) =>
-      RI.flatMap(f)(this);
-}
+      ReaderIO(RI.flatMap(f)(_f));
 
-extension MapReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, B> map<B>(
+  ReaderIO<ENV, B> map<B>(
     B Function(A) f,
   ) =>
-      RI.map(f)(this);
-}
+      ReaderIO(RI.map(f)(_f));
 
-extension ToReaderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  R.Reader<ENV, IO<A>> toReader() => RI.toReader(this);
-}
+  RX.Reader<ENV, IO<A>> toReader() => RX.Reader(_f);
 
-extension ToReaderStreamReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReaderIO(this);
-}
+  RSX.ReaderStream<ENV, A> toReaderStream() =>
+      RSX.ReaderStream(RS.fromReaderIO(_f));
 
-extension ToReaderTaskReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RT.ReaderTask<ENV, A> toReaderTask() => RT.fromReaderIO(this);
-}
+  RTX.ReaderTask<ENV, A> toReaderTask() => RTX.ReaderTask(RT.fromReaderIO(_f));
 
-extension LocalReaderIOExtension<ENV1, A> on RI.ReaderIO<ENV1, A> {
-  RI.ReaderIO<ENV2, A> local<ENV2>(
-    ENV1 Function(ENV2) f,
+  ReaderIO<ENV2, A> local<ENV2>(
+    ENV Function(ENV2) f,
   ) =>
-      RI.local(f)(this);
-}
+      ReaderIO(RI.local(f)(_f));
 
-extension ApFirstReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, A> apFirst<B>(
+  ReaderIO<ENV, A> apFirst<B>(
     RI.ReaderIO<ENV, B> second,
   ) =>
-      RI.apFirst(second)(this);
-}
+      ReaderIO(RI.apFirst(second)(_f));
 
-extension ApSecondReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {
-  RI.ReaderIO<ENV, B> apSecond<B>(
+  ReaderIO<ENV, B> apSecond<B>(
     RI.ReaderIO<ENV, B> second,
   ) =>
-      RI.apSecond(second)(this);
+      ReaderIO(RI.apSecond(second)(_f));
 }

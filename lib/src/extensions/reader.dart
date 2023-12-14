@@ -2,43 +2,41 @@ import '../../../reader.dart' as R;
 import '../../../reader_io.dart' as RI;
 import '../../../reader_stream.dart' as RS;
 import '../../io.dart';
+import 'reader_io.dart' as RIX;
+import 'reader_stream.dart' as RSX;
 
-extension AskReaderExtension<ENV, A> on R.Reader<ENV, A> {
-  R.Reader<ENV, ENV> ask() => R.ask();
-}
+final class Reader<ENV, A> {
+  const Reader(this._f);
 
-extension AsksReaderExtension<ENV, A> on R.Reader<ENV, A> {
-  R.Reader<ENV, ENV2> asks<ENV2>(
+  final R.Reader<ENV, A> _f;
+
+  Reader<ENV, ENV> ask() => Reader(R.ask());
+
+  Reader<ENV, ENV2> asks<ENV2>(
     ENV2 Function(ENV) f,
   ) =>
-      R.asks(f);
-}
+      Reader(R.asks(f));
 
-extension FlatMapReaderExtension<ENV, A> on R.Reader<ENV, A> {
-  R.Reader<ENV, B> flatMap<B>(
+  Reader<ENV, B> flatMap<B>(
     R.Reader<ENV, B> Function(A) f,
   ) =>
-      R.flatMap(f)(this);
-}
+      Reader(R.flatMap(f)(_f));
 
-extension LocalReaderExtension<ENV1, A> on R.Reader<ENV1, A> {
-  R.Reader<ENV2, A> local<ENV2>(
-    ENV1 Function(ENV2) f,
+  Reader<ENV2, A> local<ENV2>(
+    ENV Function(ENV2) f,
   ) =>
-      R.local(f)(this);
-}
+      Reader(R.local(f)(_f));
 
-extension MapReaderExtension<ENV, A> on R.Reader<ENV, A> {
-  R.Reader<ENV, B> map<B>(
+  Reader<ENV, B> map<B>(
     B Function(A) f,
   ) =>
-      R.map(f)(this);
+      Reader(R.map(f)(_f));
 }
 
-extension ToReaderStreamReaderExtension<ENV, A> on R.Reader<ENV, Stream<A>> {
-  RS.ReaderStream<ENV, A> toReaderStream() => RS.fromReader(this);
+extension ToReaderStreamReaderExtension<ENV, A> on Reader<ENV, Stream<A>> {
+  RSX.ReaderStream<ENV, A> toReaderStream() => RSX.ReaderStream(_f);
 }
 
-extension ToReaderIOReaderExtension<ENV, A> on R.Reader<ENV, IO<A>> {
-  RI.ReaderIO<ENV, A> toReaderIO() => RI.fromReader(this);
+extension ToReaderIOReaderExtension<ENV, A> on Reader<ENV, IO<A>> {
+  RIX.ReaderIO<ENV, A> toReaderIO() => RIX.ReaderIO(_f);
 }
