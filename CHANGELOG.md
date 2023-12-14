@@ -1,3 +1,4 @@
-## 0.0.1-dev.1
+## 0.0.1-dev.2
 
-- Initial version.
+- Refactored some types
+- Made a clearer distinction between the functional libraries and OO classes (oo/*.dart).
