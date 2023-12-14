@@ -23,6 +23,7 @@ The library depends on rxdart which is progressively fixed to the most recent ma
 Here's an example:
 
 ```dart
+import 'package:functionally/extensions/reader_stream.dart';
 import 'package:functionally/reader_stream.dart' as RS;
 
 void main() {
