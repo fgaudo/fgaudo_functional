@@ -1,5 +1,4 @@
-import '../extensions/io/flat_map.dart';
-import '../extensions/reader_io.dart';
+import '../extensions/io.dart';
 import '../io.dart' as I;
 import '../reader.dart' as R;
 
