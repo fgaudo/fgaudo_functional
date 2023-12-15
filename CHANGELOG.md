@@ -1,3 +1,3 @@
-## 0.0.1-dev.3
+## 0.0.1-dev.4
 
-- Fixed some inconsistencies in types
+- Now the library has separate Object-Oriented builders which can be transformed to the functional types. (oo directory)
