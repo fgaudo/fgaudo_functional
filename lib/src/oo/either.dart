@@ -1,40 +1,48 @@
 import '../../../either.dart' as E;
 
-typedef Either<L, R> = E.Either<L, R>;
+final class EitherBuilder<L, R> {
+  const EitherBuilder(this._either);
 
-extension MapLeftEitherExtension<L1, R> on Either<L1, R> {
-  Either<L2, R> mapLeft<L2>(
-    L2 Function(L1) left,
+  final E.Either<L, R> _either;
+
+  E.Either<L, R> build() => _either;
+
+  EitherBuilder<L2, R> mapLeft<L2>(
+    L2 Function(L) left,
   ) =>
-      E.mapLeft(left)(this);
-}
+      EitherBuilder(E.mapLeft(left)(_either));
 
-extension BimapEitherExtension<L1, R1> on Either<L1, R1> {
-  Either<L2, R2> bimap<L2, R2>({
-    required R2 Function(R1) right,
-    required L2 Function(L1) left,
+  EitherBuilder<L2, R2> bimap<L2, R2>({
+    required R2 Function(R) right,
+    required L2 Function(L) left,
   }) =>
-      E.bimap(right: right, left: left)(this);
-}
+      EitherBuilder(
+        E.bimap(
+          right: right,
+          left: left,
+        )(_either),
+      );
 
-extension FlatMapEitherExtension<L, R1> on Either<L, R1> {
-  Either<L, R2> flatMap<R2>(
-    Either<L, R2> Function(R1) f,
+  EitherBuilder<L, R2> flatMap<R2>(
+    E.Either<L, R2> Function(R) f,
   ) =>
-      E.flatMap(f)(this);
-}
+      EitherBuilder(E.flatMap(f)(_either));
 
-extension MapEitherExtension<L, R1> on Either<L, R1> {
-  Either<L, R2> map<R2>(
-    R2 Function(R1) right,
+  EitherBuilder<L, R2> map<R2>(
+    R2 Function(R) right,
   ) =>
-      E.map(right)(this);
-}
+      EitherBuilder(E.map(right)(_either));
 
-extension MatchEitherExtension<L, R> on Either<L, R> {
   A match<A>({
     required A Function(R) right,
     required A Function(L) left,
   }) =>
-      E.match(right: right, left: left)(this);
+      E.match(
+        right: right,
+        left: left,
+      )(_either);
+}
+
+extension ToEitherBuilderReaderExtension<L, R> on E.Either<L, R> {
+  EitherBuilder<L, R> toEitherBuilder() => EitherBuilder(this);
 }

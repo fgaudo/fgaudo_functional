@@ -1,15 +1,19 @@
 import '../../../option.dart' as O;
 
-typedef Option<A> = O.Option<A>;
+final class OptionBuilder<A> {
+  const OptionBuilder(this._option);
 
-extension MapOptionExtension<A> on Option<A> {
-  Option<B> map<B>(
+  final O.Option<A> _option;
+
+  O.Option<A> build() => _option;
+
+  OptionBuilder<B> map<B>(
     B Function(A) some,
   ) =>
-      O.map(some)(this);
-}
+      OptionBuilder(
+        O.map(some)(_option),
+      );
 
-extension MatchOptionExtension<A> on Option<A> {
   B match<B>({
     required B onNone,
     required B Function(A) onSome,
@@ -17,5 +21,9 @@ extension MatchOptionExtension<A> on Option<A> {
       O.match(
         onNone: onNone,
         onSome: onSome,
-      )(this);
+      )(_option);
+}
+
+extension ToOptionBuilderReaderExtension<A> on O.Option<A> {
+  OptionBuilder<A> toOptionBuilder() => OptionBuilder(this);
 }

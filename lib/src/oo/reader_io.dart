@@ -7,63 +7,77 @@ import 'reader.dart' as RX;
 import 'reader_stream.dart' as RSX;
 import 'reader_task.dart' as RTX;
 
-final class ReaderIO<ENV, A> {
-  const ReaderIO(this._f);
+final class ReaderIOBuilder<ENV, A> {
+  const ReaderIOBuilder(this._f);
 
   final RI.ReaderIO<ENV, A> _f;
 
-  ReaderIO<ENV, B> bracket<B>({
+  RI.ReaderIO<ENV, A> build() => _f;
+
+  ReaderIOBuilder<ENV, B> bracket<B>({
     required RI.ReaderIO<ENV, void> Function(A) release,
     required RI.ReaderIO<ENV, B> Function(A) use,
   }) =>
-      ReaderIO(
+      ReaderIOBuilder(
         RI.bracket(
           use: use,
           release: release,
         )(_f),
       );
 
-  ReaderIO<ENV, B> flatMapIO<B>(
+  ReaderIOBuilder<ENV, B> flatMapIO<B>(
     I.IO<B> Function(A) f,
   ) =>
-      ReaderIO(RI.flatMapIO(f)(_f));
+      ReaderIOBuilder(RI.flatMapIO(f)(_f));
 
-  ReaderIO<ENV, B> flatMap<B>(
+  ReaderIOBuilder<ENV, B> flatMap<B>(
     RI.ReaderIO<ENV, B> Function(A) f,
   ) =>
-      ReaderIO(RI.flatMap(f)(_f));
+      ReaderIOBuilder(RI.flatMap(f)(_f));
 
-  ReaderIO<ENV, B> map<B>(
+  ReaderIOBuilder<ENV, B> map<B>(
     B Function(A) f,
   ) =>
-      ReaderIO(RI.map(f)(_f));
+      ReaderIOBuilder(RI.map(f)(_f));
 
-  RX.Reader<ENV, IO<A>> toReader() => RX.Reader(_f);
+  RX.ReaderBuilder<ENV, IO<A>> toReader() => RX.ReaderBuilder(_f);
 
-  RSX.ReaderStream<ENV, A> toReaderStream() =>
-      RSX.ReaderStream(RS.fromReaderIO(_f));
+  RSX.ReaderStreamBuilder<ENV, A> toReaderStream() =>
+      RSX.ReaderStreamBuilder(RS.fromReaderIO(_f));
 
-  RTX.ReaderTask<ENV, A> toReaderTask() => RTX.ReaderTask(RT.fromReaderIO(_f));
+  RTX.ReaderTaskBuilder<ENV, A> toReaderTask() =>
+      RTX.ReaderTaskBuilder(RT.fromReaderIO(_f));
 
-  ReaderIO<ENV2, A> local<ENV2>(
+  ReaderIOBuilder<ENV2, A> local<ENV2>(
     ENV Function(ENV2) f,
   ) =>
-      ReaderIO(RI.local(f)(_f));
+      ReaderIOBuilder(RI.local(f)(_f));
 
-  ReaderIO<ENV, A> apFirst<B>(
+  ReaderIOBuilder<ENV, A> apFirst<B>(
     RI.ReaderIO<ENV, B> second,
   ) =>
-      ReaderIO(RI.apFirst(second)(_f));
+      ReaderIOBuilder(RI.apFirst(second)(_f));
 
-  ReaderIO<ENV, B> apSecond<B>(
+  ReaderIOBuilder<ENV, B> apSecond<B>(
     RI.ReaderIO<ENV, B> second,
   ) =>
-      ReaderIO(RI.apSecond(second)(_f));
+      ReaderIOBuilder(RI.apSecond(second)(_f));
 }
 
-ReaderIO<ENV, ENV> ask<ENV>() => ReaderIO(RI.ask());
+ReaderIOBuilder<ENV, ENV> ask<ENV>() => ReaderIOBuilder(RI.ask());
 
-ReaderIO<ENV, ENV2> asks<ENV, ENV2>(
+ReaderIOBuilder<ENV, ENV2> asks<ENV, ENV2>(
   ENV2 Function(ENV) f,
 ) =>
-    ReaderIO(RI.asks(f));
+    ReaderIOBuilder(RI.asks(f));
+
+ReaderIOBuilder<ENV, void> make<ENV>() => ReaderIOBuilder((_) => () {});
+
+ReaderIOBuilder<ENV, void> sequenceArray<ENV, A>(
+  Iterable<RI.ReaderIO<ENV, A>> arr,
+) =>
+    ReaderIOBuilder(RI.sequenceArray(arr));
+
+extension ToReaderIOBuilderReaderExtension<ENV, A> on RI.ReaderIO<ENV, A> {
+  ReaderIOBuilder<ENV, A> toReaderIOBuilder() => ReaderIOBuilder(this);
+}

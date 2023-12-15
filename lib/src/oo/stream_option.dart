@@ -1,14 +1,16 @@
 import '../../../stream_option.dart' as SO;
 
-final class StreamOption<A> {
-  const StreamOption(this._f);
+final class StreamOptionBuilder<A> {
+  const StreamOptionBuilder(this._f);
 
   final SO.StreamOption<A> _f;
 
-  StreamOption<B> map<B>(
+  SO.StreamOption<A> build() => _f;
+
+  StreamOptionBuilder<B> map<B>(
     B Function(A) mapper,
   ) =>
-      StreamOption(SO.map(mapper)(_f));
+      StreamOptionBuilder(SO.map(mapper)(_f));
 
   Stream<B> match<B>({
     required B none,
@@ -18,4 +20,8 @@ final class StreamOption<A> {
         onNone: none,
         onSome: some,
       )(_f);
+}
+
+extension ToStreamOptionBuilderReaderExtension<A> on SO.StreamOption<A> {
+  StreamOptionBuilder<A> toStreamOptionBuilder() => StreamOptionBuilder(this);
 }

@@ -1,24 +1,30 @@
 import '../../../task_option.dart' as TO;
 import 'task.dart' as TX;
 
-final class TaskOption<A> {
-  const TaskOption(this._f);
+final class TaskOptionBuilder<A> {
+  const TaskOptionBuilder(this._f);
 
   final TO.TaskOption<A> _f;
 
-  TaskOption<B> map<B>(
+  TO.TaskOption<A> build() => _f;
+
+  TaskOptionBuilder<B> map<B>(
     B Function(A) mapper,
   ) =>
-      TaskOption(TO.map(mapper)(_f));
+      TaskOptionBuilder(TO.map(mapper)(_f));
 
-  TX.Task<B> match<B>({
+  TX.TaskBuilder<B> match<B>({
     required B none,
     required B Function(A) some,
   }) =>
-      TX.Task(
+      TX.TaskBuilder(
         TO.match(
           onNone: none,
           onSome: some,
         )(_f),
       );
+}
+
+extension ToTaskEitherBuilderReaderExtension<A> on TO.TaskOption<A> {
+  TaskOptionBuilder<A> toTaskOptionBuilder() => TaskOptionBuilder(this);
 }
