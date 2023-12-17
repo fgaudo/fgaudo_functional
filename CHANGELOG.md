@@ -1,3 +1,3 @@
-## 0.0.1-dev.5
+## 0.0.1-dev.6
 
-- Combined all builders into one library
+- Fixed a bug which was causing the library to not be usable
