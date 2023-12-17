@@ -40,7 +40,7 @@ import 'package:functionally/reader_stream.dart' as RS;
 import 'package:functionally/common.dart';
 
 void main() {
-  final RS.ReaderStream<String, String> readerStream = pipe2(
+  final readerStream = pipe2(
     RS.ask<String>(),
     RS.map((hello) => '$hello World'),
   );
