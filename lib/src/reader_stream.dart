@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
+import '../common.dart';
 import '../io.dart' as I;
 import '../reader_task.dart' as RT;
 
@@ -131,3 +132,26 @@ ReaderStream<ENV2, A> Function<A>(ReaderStream<ENV1, A>) local<ENV1, ENV2>(
 
 final ReaderStream<ENV, A> Function<ENV, A>(ReaderStream<ENV, A>)
     asBroadcastStream = <ENV, A>(r) => (env) => r(env).asBroadcastStream();
+
+ReaderStream<ENV, A> Function<A>(ReaderStream<ENV, A>) apFirst<ENV, B>(
+  ReaderStream<ENV, B> rs1,
+) =>
+    <A>(rs2) => pipe2(
+          rs2,
+          flatMap(
+            (a) => pipe2(
+              rs1,
+              map<B, A>((_) => a),
+            ),
+          ),
+        );
+
+ReaderStream<ENV, B> Function<A>(ReaderStream<ENV, A>) apSecond<ENV, B>(
+  ReaderStream<ENV, B> rs1,
+) =>
+    <A>(rs2) => pipe2(
+          rs2,
+          flatMap(
+            (_) => rs1,
+          ),
+        );

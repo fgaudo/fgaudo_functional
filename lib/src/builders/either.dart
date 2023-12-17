@@ -5,6 +5,12 @@ final class EitherBuilder<L, R> {
 
   final E.Either<L, R> _either;
 
+  static EitherBuilder<L, R> left<L, R>(L value) =>
+      EitherBuilder(E.Left(value));
+
+  static EitherBuilder<L, R> right<L, R>(R value) =>
+      EitherBuilder(E.Right(value));
+
   E.Either<L, R> build() => _either;
 
   EitherBuilder<L2, R> mapLeft<L2>(

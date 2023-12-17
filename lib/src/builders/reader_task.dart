@@ -9,6 +9,18 @@ final class ReaderTaskBuilder<ENV, A> {
 
   final RT.ReaderTask<ENV, A> _f;
 
+  static ReaderTaskBuilder<ENV, ENV> ask<ENV>() => ReaderTaskBuilder(RT.ask());
+
+  static ReaderTaskBuilder<ENV, ENV2> asks<ENV, ENV2>(
+    ENV2 Function(ENV) f,
+  ) =>
+      ReaderTaskBuilder(RT.asks(f));
+
+  static ReaderTaskBuilder<ENV, Iterable<A>> sequenceArray<ENV, A>(
+    Iterable<RT.ReaderTask<ENV, A>> arr,
+  ) =>
+      ReaderTaskBuilder(RT.sequenceArray(arr));
+
   RT.ReaderTask<ENV, A> build() => _f;
 
   ReaderTaskBuilder<ENV, B> bracket<B>({
@@ -47,18 +59,6 @@ final class ReaderTaskBuilder<ENV, A> {
   ) =>
       ReaderTaskBuilder(RT.local(f)(_f));
 }
-
-ReaderTaskBuilder<ENV, ENV> ask<ENV>() => ReaderTaskBuilder(RT.ask());
-
-ReaderTaskBuilder<ENV, ENV2> asks<ENV, ENV2>(
-  ENV2 Function(ENV) f,
-) =>
-    ReaderTaskBuilder(RT.asks(f));
-
-ReaderTaskBuilder<ENV, Iterable<A>> sequenceArray<ENV, A>(
-  Iterable<RT.ReaderTask<ENV, A>> arr,
-) =>
-    ReaderTaskBuilder(RT.sequenceArray(arr));
 
 extension ToReaderTaskBuilderReaderExtension<ENV, A> on RT.ReaderTask<ENV, A> {
   ReaderTaskBuilder<ENV, A> toReaderTaskBuilder() => ReaderTaskBuilder(this);

@@ -25,6 +25,6 @@ final class TaskOptionBuilder<A> {
       );
 }
 
-extension ToTaskEitherBuilderReaderExtension<A> on TO.TaskOption<A> {
+extension ToTaskOptionBuilderReaderExtension<A> on TO.TaskOption<A> {
   TaskOptionBuilder<A> toTaskOptionBuilder() => TaskOptionBuilder(this);
 }

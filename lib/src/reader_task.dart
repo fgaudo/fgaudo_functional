@@ -1,3 +1,4 @@
+import '../common.dart';
 import '../reader.dart' as R;
 import '../reader_io.dart' as RIO;
 import '../task.dart' as T;
@@ -75,3 +76,23 @@ ReaderTask<ENV2, A> Function<A>(ReaderTask<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => (env2) => r(f(env2));
+
+ReaderTask<ENV, A> Function<A>(ReaderTask<ENV, A>) apFirst<ENV, B>(
+  ReaderTask<ENV, B> rt1,
+) =>
+    <A>(rt2) => pipe2(
+          rt2,
+          flatMap(
+            (a) => pipe2(
+              rt1,
+              map<B, A>((_) => a),
+            ),
+          ),
+        );
+
+ReaderTask<ENV, B> Function<A>(ReaderTask<ENV, A>) apSecond<ENV, B>(
+  ReaderTask<ENV, B> rt1,
+) =>
+    <A>(rt2) => flatMap(
+          (_) => rt1,
+        )(rt2);

@@ -7,6 +7,9 @@ final class StreamEitherBuilder<E, A> {
 
   SE.StreamEither<E, A> build() => _f;
 
+  static StreamEitherBuilder<E, A> empty<E, A>() =>
+      StreamEitherBuilder(SE.StreamEither<E, A>.empty());
+
   StreamEitherBuilder<E2, A2> bimap<E2, A2>({
     required E2 Function(E) left,
     required A2 Function(A) right,

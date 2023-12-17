@@ -8,6 +8,18 @@ final class ReaderBuilder<ENV, A> {
 
   final R.Reader<ENV, A> _f;
 
+  static ReaderBuilder<ENV, ENV> ask<ENV>() => ReaderBuilder(R.ask());
+
+  static ReaderBuilder<ENV, ENV2> asks<ENV, ENV2>(
+    ENV2 Function(ENV) f,
+  ) =>
+      ReaderBuilder(R.asks(f));
+
+  static ReaderBuilder<ENV, Iterable<A>> sequenceArray<ENV, A>(
+    Iterable<R.Reader<ENV, A>> arr,
+  ) =>
+      ReaderBuilder(R.sequenceArray(arr));
+
   R.Reader<ENV, A> build() => _f;
 
   ReaderBuilder<ENV, B> flatMap<B>(
@@ -35,18 +47,6 @@ extension ToReaderStreamReaderExtension<ENV, A>
 extension ToReaderIOReaderExtension<ENV, A> on ReaderBuilder<ENV, IO<A>> {
   RIX.ReaderIOBuilder<ENV, A> toReaderIO() => RIX.ReaderIOBuilder(_f);
 }
-
-ReaderBuilder<ENV, ENV> ask<ENV>() => ReaderBuilder(R.ask());
-
-ReaderBuilder<ENV, ENV2> asks<ENV, ENV2>(
-  ENV2 Function(ENV) f,
-) =>
-    ReaderBuilder(R.asks(f));
-
-ReaderBuilder<ENV, Iterable<A>> sequenceArray<ENV, A>(
-  Iterable<R.Reader<ENV, A>> arr,
-) =>
-    ReaderBuilder(R.sequenceArray(arr));
 
 extension ToReaderBuilderReaderExtension<ENV, A> on R.Reader<ENV, A> {
   ReaderBuilder<ENV, A> toReaderBuilder() => ReaderBuilder(this);

@@ -8,6 +8,14 @@ final class ReaderStreamBuilder<ENV, A> {
 
   final RS.ReaderStream<ENV, A> _f;
 
+  static ReaderStreamBuilder<ENV, ENV> ask<ENV>() =>
+      ReaderStreamBuilder(RS.ask());
+
+  static ReaderStreamBuilder<ENV, ENV2> asks<ENV, ENV2>(
+    ENV2 Function(ENV) f,
+  ) =>
+      ReaderStreamBuilder(RS.asks(f));
+
   RS.ReaderStream<ENV, A> build() => _f;
 
   ReaderStreamBuilder<ENV, B> concatMapStream<B>(
@@ -103,14 +111,17 @@ final class ReaderStreamBuilder<ENV, A> {
       ReaderStreamBuilder(RS.asBroadcastStream(_f));
 
   RR.ReaderBuilder<ENV, Stream<A>> toReader() => RR.ReaderBuilder(_f);
+
+  ReaderStreamBuilder<ENV, A> apFirst<B>(
+    RS.ReaderStream<ENV, B> second,
+  ) =>
+      ReaderStreamBuilder(RS.apFirst(second)(_f));
+
+  ReaderStreamBuilder<ENV, B> apSecond<B>(
+    RS.ReaderStream<ENV, B> second,
+  ) =>
+      ReaderStreamBuilder(RS.apSecond(second)(_f));
 }
-
-ReaderStreamBuilder<ENV, ENV> ask<ENV>() => ReaderStreamBuilder(RS.ask());
-
-ReaderStreamBuilder<ENV, ENV2> asks<ENV, ENV2>(
-  ENV2 Function(ENV) f,
-) =>
-    ReaderStreamBuilder(RS.asks(f));
 
 extension ToReaderStreamBuilderReaderExtension<ENV, A>
     on RS.ReaderStream<ENV, A> {

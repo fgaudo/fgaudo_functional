@@ -12,6 +12,24 @@ final class ReaderIOBuilder<ENV, A> {
 
   final RI.ReaderIO<ENV, A> _f;
 
+  static ReaderIOBuilder<ENV, ENV> ask<ENV>() => ReaderIOBuilder(RI.ask());
+
+  static ReaderIOBuilder<ENV, ENV2> asks<ENV, ENV2>(
+    ENV2 Function(ENV) f,
+  ) =>
+      ReaderIOBuilder(RI.asks(f));
+
+  static ReaderIOBuilder<ENV, void> make<ENV>() =>
+      ReaderIOBuilder((_) => () {});
+
+  static ReaderIOBuilder<ENV, A> of<ENV, A>(A a) =>
+      ReaderIOBuilder((_) => () => a);
+
+  static ReaderIOBuilder<ENV, void> sequenceArray<ENV, A>(
+    Iterable<RI.ReaderIO<ENV, A>> arr,
+  ) =>
+      ReaderIOBuilder(RI.sequenceArray(arr));
+
   RI.ReaderIO<ENV, A> build() => _f;
 
   ReaderIOBuilder<ENV, B> bracket<B>({
@@ -63,20 +81,6 @@ final class ReaderIOBuilder<ENV, A> {
   ) =>
       ReaderIOBuilder(RI.apSecond(second)(_f));
 }
-
-ReaderIOBuilder<ENV, ENV> ask<ENV>() => ReaderIOBuilder(RI.ask());
-
-ReaderIOBuilder<ENV, ENV2> asks<ENV, ENV2>(
-  ENV2 Function(ENV) f,
-) =>
-    ReaderIOBuilder(RI.asks(f));
-
-ReaderIOBuilder<ENV, void> make<ENV>() => ReaderIOBuilder((_) => () {});
-
-ReaderIOBuilder<ENV, void> sequenceArray<ENV, A>(
-  Iterable<RI.ReaderIO<ENV, A>> arr,
-) =>
-    ReaderIOBuilder(RI.sequenceArray(arr));
 
 extension ToReaderIOBuilderReaderExtension<ENV, A> on RI.ReaderIO<ENV, A> {
   ReaderIOBuilder<ENV, A> toReaderIOBuilder() => ReaderIOBuilder(this);

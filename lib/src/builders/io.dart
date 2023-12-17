@@ -5,6 +5,8 @@ final class IOBuilder<A> {
 
   final I.IO<A> _f;
 
+  static IOBuilder<A> of<A>(A a) => IOBuilder(() => a);
+
   I.IO<A> build() => _f;
 
   IOBuilder<B> bracket<B>({

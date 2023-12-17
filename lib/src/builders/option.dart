@@ -5,6 +5,10 @@ final class OptionBuilder<A> {
 
   final O.Option<A> _option;
 
+  static OptionBuilder<A> none<A>() => OptionBuilder(O.None());
+
+  static OptionBuilder<A> some<A>(A a) => OptionBuilder(O.Some(a));
+
   O.Option<A> build() => _option;
 
   OptionBuilder<B> map<B>(
