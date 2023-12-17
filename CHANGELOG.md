@@ -1,3 +1,3 @@
-## 0.0.1-dev.6
+## 0.0.1-dev.7
 
-- Fixed a bug which was causing the library to not be usable
+- Fixed other bugs not reported by the dart analyzer..
