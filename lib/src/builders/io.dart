@@ -5,8 +5,6 @@ final class IOBuilder<A> {
 
   final I.IO<A> _f;
 
-  static IOBuilder<A> of<A>(A a) => IOBuilder(() => a);
-
   I.IO<A> build() => _f;
 
   IOBuilder<B> bracket<B>({
@@ -26,6 +24,6 @@ final class IOBuilder<A> {
       IOBuilder(I.flatMap(f)(_f));
 }
 
-extension ToIOBuilderReaderExtension<ENV, A> on I.IO<A> {
+extension ToBuilderIOExtension<ENV, A> on I.IO<A> {
   IOBuilder<A> toIOBuilder() => IOBuilder(this);
 }

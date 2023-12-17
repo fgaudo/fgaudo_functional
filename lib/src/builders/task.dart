@@ -24,6 +24,6 @@ final class TaskBuilder<A> {
       TaskBuilder(T.map(mapper)(_f));
 }
 
-extension ToTaskBuilderReaderExtension<A> on T.Task<A> {
+extension ToBuilderTaskExtension<A> on T.Task<A> {
   TaskBuilder<A> toTaskBuilder() => TaskBuilder(this);
 }

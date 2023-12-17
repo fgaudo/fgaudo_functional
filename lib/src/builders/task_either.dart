@@ -41,6 +41,6 @@ final class TaskEitherBuilder<E, A> {
       );
 }
 
-extension ToTaskEitherBuilderReaderExtension<L, R> on TE.TaskEither<L, R> {
+extension ToBuilderTaskEitherExtension<L, R> on TE.TaskEither<L, R> {
   TaskEitherBuilder<L, R> toTaskEitherBuilder() => TaskEitherBuilder(this);
 }

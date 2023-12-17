@@ -7,9 +7,6 @@ final class StreamEitherBuilder<E, A> {
 
   SE.StreamEither<E, A> build() => _f;
 
-  static StreamEitherBuilder<E, A> empty<E, A>() =>
-      StreamEitherBuilder(SE.StreamEither<E, A>.empty());
-
   StreamEitherBuilder<E2, A2> bimap<E2, A2>({
     required E2 Function(E) left,
     required A2 Function(A) right,
@@ -47,7 +44,7 @@ final class StreamEitherBuilder<E, A> {
   ) =>
       StreamEitherBuilder(SE.mapLeft(left)(_f));
 
-  StreamEitherBuilder<E, A2> mapRight<A2>(
+  StreamEitherBuilder<E, A2> map<A2>(
     A2 Function(A) right,
   ) =>
       StreamEitherBuilder(SE.map(right)(_f));
@@ -59,7 +56,7 @@ final class StreamEitherBuilder<E, A> {
       SE.match(left: left, right: right)(_f);
 }
 
-extension ToStreamEitherBuilderReaderExtension<L, R> on SE.StreamEither<L, R> {
+extension ToBuilderStreamEitherExtension<L, R> on SE.StreamEither<L, R> {
   StreamEitherBuilder<L, R> toStreamEitherBuilder() =>
       StreamEitherBuilder(this);
 }
