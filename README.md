@@ -17,8 +17,8 @@ If you need one in particular, just open an issue.
 ## Usage
 
 There are two ways to use this library.
-1) A more object-oriented approach which uses builders to chain methods and build the functional types.
-2) A more functional approach which sequentially pipes functions to get a result.
+1) A more object-oriented way which uses builders to chain methods and build the functional types.
+2) A more functional way which sequentially pipes functions to get a result.
 
 Object-oriented:
 ```dart
