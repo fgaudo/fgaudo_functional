@@ -82,7 +82,7 @@ ReaderTask<ENV, A> Function<A>(ReaderTask<ENV, A>) apFirst<ENV, B>(
 ) =>
     <A>(rt2) => pipe2(
           rt2,
-          flatMap(
+          flatMap<ENV, A, A>(
             (a) => pipe2(
               rt1,
               map<B, A>((_) => a),

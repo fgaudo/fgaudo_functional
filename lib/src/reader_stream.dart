@@ -138,7 +138,7 @@ ReaderStream<ENV, A> Function<A>(ReaderStream<ENV, A>) apFirst<ENV, B>(
 ) =>
     <A>(rs2) => pipe2(
           rs2,
-          flatMap(
+          flatMap<ENV, A, A>(
             (a) => pipe2(
               rs1,
               map<B, A>((_) => a),
