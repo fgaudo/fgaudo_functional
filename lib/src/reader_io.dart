@@ -77,7 +77,7 @@ ReaderIO<ENV, A> Function<A>(ReaderIO<ENV, A>) apFirst<ENV, B>(
 ) =>
     <A>(rio2) => pipe2(
           rio2,
-          flatMap(
+          flatMap<ENV, A, A>(
             (a) => pipe2(
               rio1,
               map<B, A>((_) => a),
