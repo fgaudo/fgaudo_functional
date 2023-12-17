@@ -22,12 +22,11 @@ There are two ways to use this library.
 
 Object-oriented:
 ```dart
-import 'package:functionally/oo/reader_stream.dart' as RSX;
-import 'package:functionally/reader_stream.dart' as RS;
+import 'package:functionally/builders.dart';
 
 void main() {
-  final RS.ReaderStream<String, String> readerStream =
-        RSX.ask<String>()
+  final readerStream =
+        ReaderStreamBuilder.ask<String>()
           .map((hello) => '$hello World')
           .build();
 

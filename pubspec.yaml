@@ -1,10 +1,10 @@
 name: functionally
 description: A library designed to help develop code in a more FP oriented way.
-version: 0.0.1-dev.4
+version: 0.0.1-dev.5
 repository: https://github.com/fgaudo/functionally
 
 environment:
-  sdk: ^3.2.2
+  sdk: ^3.2.3
 
 dependencies:
   rxdart: ^0.27.7
