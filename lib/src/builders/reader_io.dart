@@ -52,16 +52,6 @@ final class ReaderIOBuilder<ENV, A> {
     ENV Function(ENV2) f,
   ) =>
       ReaderIOBuilder(RI.local(f)(_f));
-
-  ReaderIOBuilder<ENV, A> apFirst<B>(
-    RI.ReaderIO<ENV, B> second,
-  ) =>
-      ReaderIOBuilder(RI.apFirst(second)(_f));
-
-  ReaderIOBuilder<ENV, B> apSecond<B>(
-    RI.ReaderIO<ENV, B> second,
-  ) =>
-      ReaderIOBuilder(RI.apSecond(second)(_f));
 }
 
 extension ToBuilderReaderIOExtension<ENV, A> on RI.ReaderIO<ENV, A> {

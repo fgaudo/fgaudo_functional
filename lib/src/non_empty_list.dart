@@ -1,5 +1,3 @@
-import '../option.dart';
-
 final class NonEmptyList<A> {
   const NonEmptyList(this.head, this.tail);
 

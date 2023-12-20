@@ -9,15 +9,6 @@ Task<A2> Function(
 ) =>
     (task) => () => task().then(mapper);
 
-Task<(A1, A2)> sequenceTuple2<A1, A2>(
-  Task<A1> te1,
-  Task<A2> te2,
-) =>
-    () async {
-      final result = await Future.wait([te1(), te2()]);
-      return (result[0] as A1, result[1] as A2);
-    };
-
 Task<A> fromIO<A>(IO<A> io) => () async => io();
 
 Task<B> Function(Task<A>) bracket<A, B>({
@@ -32,3 +23,14 @@ Task<B> Function(Task<A>) bracket<A, B>({
             await release(resource)();
           }
         };
+
+Task<B> Function<B>(Task<B Function(A)>) ap<A>(
+  Task<A> t,
+) =>
+    <B>(ft) => () => Future.wait([ft(), t()])
+        .then((value) => (value[0]! as B Function(A))(value[1] as A));
+
+Task<B> Function<B>(Task<B Function(A)>) apSeq<A>(
+  Task<A> t,
+) =>
+    <B>(ft) => () => ft().then((f) => map(f)(t)());

@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
-
 import 'common.dart';
 import 'either.dart';
 import 'either.dart' as E;
@@ -51,36 +49,3 @@ Stream<A> Function(
             right: right,
           ),
         );
-
-StreamEither<L, R> Function(
-  StreamEither<L, R> either$,
-) doOnEither<L, R>({
-  required void Function(L) left,
-  required void Function(R) right,
-}) =>
-    (either$) => either$.doOnData(
-          (event) => switch (event) {
-            Left(value: final value) => left(value),
-            Right(value: final value) => right(value)
-          },
-        );
-
-StreamEither<L, R> Function<R>(
-  StreamEither<L, R> either$,
-) doOnLeft<L>(
-  void Function(L) procedure,
-) =>
-    <R>(either$) => doOnEither(
-          left: procedure,
-          right: (R _) {},
-        )(either$);
-
-StreamEither<L, R> Function<L>(
-  StreamEither<L, R> either$,
-) doOnRight<R>(
-  void Function(R) procedure,
-) =>
-    <L>(either$) => doOnEither(
-          left: (L _) {},
-          right: procedure,
-        )(either$);

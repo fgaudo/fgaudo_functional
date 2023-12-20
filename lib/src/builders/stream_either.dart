@@ -18,27 +18,6 @@ final class StreamEitherBuilder<E, A> {
         )(_f),
       );
 
-  StreamEitherBuilder<E, A> doOnEither({
-    required void Function(E) left,
-    required void Function(A) right,
-  }) =>
-      StreamEitherBuilder(
-        SE.doOnEither(
-          left: left,
-          right: right,
-        )(_f),
-      );
-
-  StreamEitherBuilder<E, A> doOnLeft(
-    void Function(E) procedure,
-  ) =>
-      StreamEitherBuilder(SE.doOnLeft(procedure)(_f));
-
-  StreamEitherBuilder<E, A> doOnRight(
-    void Function(A) procedure,
-  ) =>
-      StreamEitherBuilder(SE.doOnRight(procedure)(_f));
-
   StreamEitherBuilder<E2, A> mapLeft<E2>(
     E2 Function(E) left,
   ) =>

@@ -1,5 +1,6 @@
 import '../../reader_stream.dart' as RS;
 import '../../reader_task.dart' as RT;
+
 import '../../task.dart' as T;
 import 'reader.dart' as RX;
 import 'reader_stream.dart' as RSX;
@@ -11,31 +12,10 @@ final class ReaderTaskBuilder<ENV, A> {
 
   RT.ReaderTask<ENV, A> build() => _f;
 
-  ReaderTaskBuilder<ENV, B> bracket<B>({
-    required RT.ReaderTask<ENV, void> Function(A) release,
-    required RT.ReaderTask<ENV, B> Function(A) use,
-  }) =>
-      ReaderTaskBuilder(
-        RT.bracket(
-          use: use,
-          release: release,
-        )(_f),
-      );
-
-  ReaderTaskBuilder<ENV, B> flatMapTask<B>(
-    T.Task<B> Function(A) f,
+  ReaderTaskBuilder<ENV, B> transform<B>(
+    RT.ReaderTask<ENV, B> Function(RT.ReaderTask<ENV, A>) f,
   ) =>
-      ReaderTaskBuilder(RT.flatMapTask(f)(_f));
-
-  ReaderTaskBuilder<ENV, B> flatMap<B>(
-    RT.ReaderTask<ENV, B> Function(A) f,
-  ) =>
-      ReaderTaskBuilder(RT.flatMap(f)(_f));
-
-  ReaderTaskBuilder<ENV, B> map<B>(
-    B Function(A) f,
-  ) =>
-      ReaderTaskBuilder(RT.map(f)(_f));
+      ReaderTaskBuilder(f(this._f));
 
   RX.ReaderBuilder<ENV, T.Task<A>> toReader() => RX.ReaderBuilder(_f);
 

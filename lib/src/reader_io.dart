@@ -1,4 +1,3 @@
-import '../common.dart';
 import '../io.dart' as I;
 import '../reader.dart' as R;
 
@@ -71,23 +70,3 @@ ReaderIO<ENV2, A> Function<A>(ReaderIO<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => (env2) => r(f(env2));
-
-ReaderIO<ENV, A> Function<A>(ReaderIO<ENV, A>) apFirst<ENV, B>(
-  ReaderIO<ENV, B> rio1,
-) =>
-    <A>(rio2) => pipe2(
-          rio2,
-          flatMap<ENV, A, A>(
-            (a) => pipe2(
-              rio1,
-              map<B, A>((_) => a),
-            ),
-          ),
-        );
-
-ReaderIO<ENV, B> Function<A>(ReaderIO<ENV, A>) apSecond<ENV, B>(
-  ReaderIO<ENV, B> rio1,
-) =>
-    <A>(rio2) => flatMap(
-          (_) => rio1,
-        )(rio2);

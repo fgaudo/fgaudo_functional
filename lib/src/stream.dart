@@ -1,30 +1,19 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/streams.dart';
+import 'package:rxdart/transformers.dart';
 
 import 'io.dart';
 import 'task.dart' as T;
 
-Stream<A> fromTask<A>(T.Task<A> task) =>
-    FromCallableStream(() => task(), reusable: true).asBroadcastStream();
+Stream<A> fromTask<A>(T.Task<A> task, {bool reusable = false}) =>
+    FromCallableStream(task, reusable: reusable);
 
-Stream<A> fromIO<A>(IO<A> io) => fromTask(T.fromIO(io));
+Stream<A> fromIO<A>(IO<A> io, {bool reusable = false}) =>
+    fromTask(T.fromIO(io), reusable: reusable);
 
-Stream<C> combineLatest2<A, B, C>(
-  Stream<A> a,
-  Stream<B> b,
-  C Function(A, B) mapper,
-) =>
-    ZipStream(
-      [a, b],
-      (values) => mapper(
-        values[0] as A,
-        values[1] as B,
-      ),
-    ).asBroadcastStream();
+Stream<A> fromValue<A>(A a, {bool reusable = false}) =>
+    fromTask(() async => a, reusable: reusable);
 
-Stream<(A, B)> combineLatest2Tuple<A, B>(
-  Stream<A> a,
-  Stream<B> b,
-) =>
-    combineLatest2(a, b, (a, b) => (a, b));
+Stream<A> fromIterable<A>(Iterable<A> list, {bool reusable = false}) =>
+    fromTask(() async => list, reusable: reusable).flatMap(Stream.fromIterable);
