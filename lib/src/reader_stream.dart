@@ -33,12 +33,17 @@ ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) map<A, B>(
 ) =>
     <ENV>(ra) => (r) => ra(r).map(f);
 
-ReaderStream<ENV, B> Function<ENV>(ReaderStream<ENV, A>) mapStream<A, B>(
-  Stream<B> Function(Stream<A>) f,
+ReaderStream<ENV, B> Function(ReaderStream<ENV, A>) map_<ENV, A, B>(
+  B Function(A) f,
 ) =>
-    <ENV>(ra) => (r) => ra(r).transform(StreamTransformer.fromBind(f));
+    map(f);
 
 ReaderStream<ENV2, A> Function<A>(ReaderStream<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => (env2) => r(f(env2));
+
+ReaderStream<ENV2, A> Function(ReaderStream<ENV1, A>) local_<A, ENV1, ENV2>(
+  ENV1 Function(ENV2) f,
+) =>
+    local(f);

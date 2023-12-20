@@ -30,10 +30,10 @@ ReaderTask<ENV, B> Function<ENV>(ReaderTask<ENV, A>) map<A, B>(
           return () async => f(await task());
         };
 
-ReaderTask<ENV, B> Function(ReaderTask<ENV, A>) mapTask<ENV, A, B>(
-  T.Task<B> Function(T.Task<A>) f,
+ReaderTask<ENV, B> Function(ReaderTask<ENV, A>) map_<ENV, A, B>(
+  B Function(A) f,
 ) =>
-    R.map(f);
+    map(f);
 
 ReaderTask<ENV, B> Function(ReaderTask<ENV, A>) flatMap<ENV, A, B>(
   ReaderTask<ENV, B> Function(A) f,
@@ -42,6 +42,19 @@ ReaderTask<ENV, B> Function(ReaderTask<ENV, A>) flatMap<ENV, A, B>(
           final task = rt(env);
           return () async => f(await task())(env)();
         };
+
+ReaderTask<ENV, B> Function<ENV>(ReaderTask<ENV, A>) flatMapTask<A, B>(
+  T.Task<B> Function(A) f,
+) =>
+    <ENV>(rt) => (env) {
+          final task = rt(env);
+          return () async => f(await task())();
+        };
+
+ReaderTask<ENV, B> Function(ReaderTask<ENV, A>) flatMapTask_<ENV, A, B>(
+  T.Task<B> Function(A) f,
+) =>
+    flatMapTask_(f);
 
 ReaderTask<ENV, Iterable<A>> sequenceArray<ENV, A>(
   Iterable<ReaderTask<ENV, A>> arr,
@@ -56,3 +69,8 @@ ReaderTask<ENV2, A> Function<A>(ReaderTask<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => (env2) => r(f(env2));
+
+ReaderTask<ENV2, A> Function(ReaderTask<ENV1, A>) local_<A, ENV1, ENV2>(
+  ENV1 Function(ENV2) f,
+) =>
+    local(f);

@@ -27,6 +27,11 @@ ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) flatMapIO<A, B>(
           return () => f(io())();
         };
 
+ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) flatMapIO_<ENV, A, B>(
+  I.IO<B> Function(A) f,
+) =>
+    flatMapIO(f);
+
 ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) flatMap<ENV, A, B>(
   ReaderIO<ENV, B> Function(A) f,
 ) =>
@@ -42,6 +47,11 @@ ReaderIO<ENV, B> Function<ENV>(ReaderIO<ENV, A>) map<A, B>(
           final io = rio(env);
           return () => f(io());
         };
+
+ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) map_<ENV, A, B>(
+  B Function(A) f,
+) =>
+    map(f);
 
 ReaderIO<ENV, B> Function(ReaderIO<ENV, A>) bracket<ENV, A, B>({
   required ReaderIO<ENV, void> Function(A) release,
@@ -70,3 +80,8 @@ ReaderIO<ENV2, A> Function<A>(ReaderIO<ENV1, A>) local<ENV1, ENV2>(
   ENV1 Function(ENV2) f,
 ) =>
     <A>(r) => (env2) => r(f(env2));
+
+ReaderIO<ENV2, A> Function(ReaderIO<ENV1, A>) local_<A, ENV1, ENV2>(
+  ENV1 Function(ENV2) f,
+) =>
+    local(f);
